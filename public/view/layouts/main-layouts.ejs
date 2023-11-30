@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Inventory Poliban</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Creepster&family=Hind:wght@300&family=Manjari&family=Nunito&family=Quicksand:wght@700&family=Skranji&family=Titillium+Web&family=Yatra+One&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</head>
+
+<% if (selectedData) { %>
+
+    <body class="bg-[rgb(252,252,252)] tw-tracking-wide tw-text-[1.15vw]" style="font-family: Nunito"
+        onload="Edit.show({})">
+        <% } else { %>
+
+            <body class="bg-[rgb(252,252,252)] tw-tracking-wide tw-text-[1.15vw]" style="font-family: Nunito">
+                <% } %>
+
+                    <!-- NAVBAR KITA -->
+                    <nav class="navbar bg-white py-0 position-sticky sticky-top z-1 tw-shadow-[0px_0px_1px_1px_rgba(42,98,255,0.3),0px_0px_5px_0.5px_rgba(0,0,0,0.3);]"
+                        id="navbar">
+                        <div class="container-fluid d-flex justify-content-between px-0">
+                            <div class="navbar-brand px-4">
+                                <img src="https://4dydd.github.io/footage/logopoliban.webp" alt="Logo" width="40"
+                                    class="d-inline-block align-text-center" />
+                                Pendataan Barang Poliban
+                            </div>
+
+                            <div class="d-flex gap-3 px-4">
+                                <form action="/cari<%= halaman %>" method="post"
+                                    class="m-0 tw-max-w-[3vw] hover:tw-max-w-[20vw] hover:tw-cursor-pointer hover:tw-pointer-events-auto tw-relative tw-bg-blue-50 d-flex justify-content-start align-items-center tw-border-blue-300 tw-border-[1px] rounded overflow-hidden tw-transition-all tw-duration-300 tw-ease-in-out"
+                                    onmouseleave="tutup(this)">
+                                    <% if (halaman !=="PeminjamanUser" ) { %>
+                                        <input
+                                            class="p-1 tw-ml-[3vw] tw-text-blue-700 tw-placeholder-blue-800 tw-bg-blue-100 tw-outline-none focus:tw-border-none focus:tw-bg-blue-200 focus:tw-placeholder-blue-700 tw-transition-all tw-ease-out tw-duration-300"
+                                            type="text" name="DataYangDicari" placeholder="cari data <%= halaman %>">
+                                        <% }else{ %>
+                                            <input
+                                                class="p-1 tw-ml-[3vw] tw-text-blue-700 tw-placeholder-blue-800 tw-bg-blue-100 tw-outline-none focus:tw-border-none focus:tw-bg-blue-200 focus:tw-placeholder-blue-700 tw-transition-all tw-ease-out tw-duration-300"
+                                                type="text" name="DataYangDicari" placeholder="cari data Barang">
+                                            <% } %>
+                                                <div class="tw-scale-x-[-1] px-2 tw-absolute tw-w-[3vw] tw-bg-white tw-h-full tw-flex justify-content-center align-items-center"
+                                                    onclick="this.parentElement.submit()">
+                                                    <i class="bi-search tw-text-blue-800"></i>
+                                                </div>
+                                </form>
+
+                                <% if (cari) { %>
+                                    <% if (halaman=="Barang" ) { %>
+                                        <div class="tw-flex justify-content-center align-items-center text-center tw-bg-blue-50 hover:tw-bg-blue-500 tw-text-blue-500 hover:tw-text-white p-1 rounded tw-cursor-pointer border-1 tw-border-blue-500 px-2 tw-transition-all tw-duration-100 tw-ease-in"
+                                            onclick="goTo(`/barang`, {delay : 100})">tampilkan semua data</div>
+                                        <% }else if (halaman=="Mahasiswa" ) { %>
+                                            <div class="tw-flex justify-content-center align-items-center text-center tw-bg-blue-50 hover:tw-bg-blue-500 tw-text-blue-500 hover:tw-text-white rounded tw-cursor-pointer border-1 tw-border-blue-500 px-2 tw-transition-all tw-duration-100 tw-ease-in"
+                                                onclick="goTo(`/mahasiswa`, {delay : 100})">tampilkan semua data
+                                            </div>
+                                            <% }else if (halaman=="Peminjaman" ) { %>
+                                                <div class="tw-flex justify-content-center align-items-center text-center tw-bg-blue-50 hover:tw-bg-blue-500 tw-text-blue-500 hover:tw-text-white rounded tw-cursor-pointer border-1 tw-border-blue-500 px-2 tw-transition-all tw-duration-100 tw-ease-in"
+                                                    onclick="goTo(`/peminjaman`, {delay : 100})">tampilkan semua data
+                                                </div>
+                                                <% }else if (halaman=="PeminjamanUser" ) { %>
+                                                    <div class="tw-flex justify-content-center align-items-center text-center tw-bg-blue-50 hover:tw-bg-blue-500 tw-text-blue-500 hover:tw-text-white rounded tw-cursor-pointer border-1 tw-border-blue-500 px-2 tw-transition-all tw-duration-100 tw-ease-in"
+                                                        onclick="goTo(`/peminjaman/user`, {delay : 100})">tampilkan
+                                                        semua data
+                                                    </div>
+                                                    <% } %>
+                                                        <% } %>
+
+                                                            <% if (halaman !=="Peminjaman" && halaman
+                                                                !=="PeminjamanUser" ) { %>
+                                                                <div class="tw-flex justify-content-center align-items-center text-center tw-bg-cyan-50 hover:tw-bg-cyan-600 tw-text-cyan-600 hover:tw-text-white  border-1 tw-border-cyan-700 rounded tw-cursor-pointer tw-transition-all tw-duration-100 tw-ease-in px-2 addDatanya"
+                                                                    onclick="Tambah.show({delay: 300})">
+                                                                    Tambah Data
+                                                                </div>
+                                                                <% } %>
+                                                                    <% if (halaman !=="PeminjamanUser" ) { %>
+
+                                                                        <div
+                                                                            class="tw-max-w-[30vw] hover:tw-cursor-pointer hover:tw-pointer-events-auto m-0 tw-relative tw-bg-blue-50 d-flex justify-content-start align-items-center tw-border-blue-300 tw-border-[1px] rounded overflow-hidden tw-transition-all tw-duration-300 tw-ease-in-out">
+                                                                            <div
+                                                                                class="tw-scale-x-[-1] px-2 tw-absolute tw-w-[3vw] tw-bg-white tw-h-full tw-flex justify-content-center align-items-center tw-gap-2 tw-cursor-default">
+                                                                                <i
+                                                                                    class="bi-table tw-text-blue-800"></i>
+                                                                            </div>
+                                                                            <select
+                                                                                class="tw-outline-none tw-bg-cyan-50 tw-text-cyan-700 tw-text-center py-1 tw-ml-[3vw] tw-max-w-[12vw]"
+                                                                                onchange="goTo(`${this.value}`,{delay: 100})">
+                                                                                <option class="" value="/"
+                                                                                    <%=halaman==='' ? 'selected' : '' %>
+                                                                                    >Dashboard</option>
+                                                                                <option class="" value="/barang"
+                                                                                    <%=halaman==='Barang' ? 'selected'
+                                                                                    : '' %>
+                                                                                    >Tabel
+                                                                                    Barang</option>
+                                                                                <option class="" value="/mahasiswa"
+                                                                                    <%=halaman==='Mahasiswa'
+                                                                                    ? 'selected' : '' %>>Tabel
+                                                                                    Mahasiswa</option>
+                                                                                <option class="" value="/peminjaman"
+                                                                                    <%=halaman==='Peminjaman'
+                                                                                    ? 'selected' : '' %>>Tabel
+                                                                                    Peminjaman</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <% } %>
+
+                            </div>
+                        </div>
+                    </nav>
+                    <!-- NAVBAR KITA -->
+
+                    <!-- ALERT KITA -->
+                    <% if (berhasil) { %>
+
+                        <% if (berhasil[0]==false) { %>
+                            <div class="alert alert-danger tw-min-w-[25vw] d-flex position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out"
+                                id="alertnya" role="alert">
+                                <div>
+                                    <%- berhasil[1] %>!
+                                </div>
+                            </div>
+                            <% }else if (berhasil[0]==true) { %>
+                                <div class="alert alert-success tw-min-w-[25vw] d-flex position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out"
+                                    id="alertnya" role="alert">
+                                    <div>
+                                        <%- berhasil[1] %>!
+                                    </div>
+                                </div>
+                                <% } %>
+
+                                    <% } %>
+                                        <!-- ALERT KITA -->
+
+                                        <main
+                                            class="max-vw-100 p-3 d-flex flex-column justify-content-center align-items-center gap-3">
+                                            <% if (cari) { %>
+                                                <div
+                                                    class="tw-flex justify-content-center align-items-center text-center tw-bg-cyan-50 tw-text-cyan-600 tw-text-[1.5vw] py-1 px-3 rounded">
+                                                    pencarian berdasarkan : <%= cari %>
+                                                </div>
+                                                <% } %>
+                                                    <%- body %>
+                                        </main>
+
+                                        <script src="../../script/script.js"></script>
+            </body>
+
+</html>

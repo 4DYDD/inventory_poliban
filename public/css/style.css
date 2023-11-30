@@ -1,0 +1,58 @@
+@keyframes comeleft {
+}
+
+@keyframes slidedown {
+  0% {
+    position: fixed;
+    top: -10%;
+  }
+
+  100% {
+    position: fixed;
+    top: 20%;
+  }
+}
+
+@keyframes slideup {
+  0% {
+    position: fixed;
+    top: 20%;
+  }
+
+  100% {
+    position: fixed;
+    top: -10%;
+  }
+}
+
+@keyframes animasiAddData {
+  0% {
+    pointer-events: none;
+    display: none;
+    opacity: 0;
+  }
+
+  100% {
+    pointer-events: all;
+    display: flex;
+    opacity: 1;
+  }
+}
+
+@keyframes animasiAddDatabalik {
+  0% {
+    pointer-events: all;
+    display: flex;
+    opacity: 1;
+  }
+
+  100% {
+    pointer-events: none;
+    display: none;
+    opacity: 0;
+  }
+}
+
+#alertnya {
+  animation: slidedown 0.3s ease-out both;
+}
