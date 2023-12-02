@@ -265,6 +265,7 @@ app.get("/peminjaman/user", (req, res) => {
         dataBarang: JSON.parse(JSON.stringify(dataBarang)),
         berhasil: info.berhasil,
         cari: info.cari,
+        sesi: info.sesi,
         halaman: info.halaman,
         layout: "layouts/main-layouts-user",
         title: "Peminjaman Barang Poliban",
@@ -281,6 +282,7 @@ app.get("/peminjaman/user", (req, res) => {
         dataBarang: [],
         berhasil: info.berhasil,
         cari: info.cari,
+        sesi: info.sesi,
         halaman: info.halaman,
         layout: "layouts/main-layouts",
         title: "Halaman Peminjaman User Poliban",
@@ -345,16 +347,24 @@ app.post("/pinjamBarang", (req, res) => {
           if (err) reject(err);
           const resultnya = JSON.parse(JSON.stringify(results));
           if (resultnya.length >= 1) {
-            resolve({
-              pesan:
-                "Anda belum mengembalikan barang yang sebelumnya anda pinjam",
-              tipe: false,
-            });
+            reject(
+              "Anda belum mengembalikan barang yang sebelumnya anda pinjam"
+            );
+          } else if (jumlah_barang_dipinjam < 1) {
+            reject(
+              "Jumlah barang yang ingin dipinjam 0, anda tidak meminjam apapun"
+            );
           } else {
-            resolve({
-              pesan: "Pinjam Barang Berhasil",
-              tipe: true,
-            });
+            con.query(
+              `INSERT INTO info_peminjaman (waktu_peminjaman, id_barang, barang_dipinjam, nim_mahasiswa, status) VALUES ('${waktu_meminjam}', '${id_barang}', ${jumlah_barang_dipinjam}, '${nim_peminjam}', 'meminjam')`,
+              (err, results) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve("Pinjam barang berhasil");
+                }
+              }
+            );
           }
         }
       );
@@ -363,37 +373,8 @@ app.post("/pinjamBarang", (req, res) => {
 
   editData()
     .then((infonya) => {
-      if (infonya.tipe) {
-        con.query(
-          `INSERT INTO info_peminjaman (waktu_peminjaman, id_barang, barang_dipinjam, nim_mahasiswa, status) VALUES ('${waktu_meminjam}', '${id_barang}', ${jumlah_barang_dipinjam}, '${nim_peminjam}', 'meminjam')`,
-          (err, results) => {
-            if (err) {
-              info.berhasil = [false, err];
-              res.redirect("/peminjaman/user");
-            } else {
-              if (jumlah_barang_dipinjam < 1) {
-                con.query(
-                  `DELETE FROM info_peminjaman WHERE nim_mahasiswa = ${nim_peminjam}`
-                );
-
-                info.berhasil = [
-                  false,
-                  "Jumlah barang yang ingin dipinjam 0, anda tidak meminjam apapun",
-                ];
-                res.redirect("/peminjaman/user");
-              } else {
-                info.berhasil = [true, infonya.pesan];
-                res.redirect("/peminjaman/user");
-              }
-            }
-          }
-        );
-      } else {
-        info.berhasil = [false, infonya.pesan];
-        console.log("INI ERRORNYA");
-        console.error(infonya.pesan);
-        res.redirect("/peminjaman/user");
-      }
+      info.berhasil = [true, infonya];
+      res.redirect("/");
     })
     .catch((err) => {
       info.berhasil = [false, err];
@@ -693,7 +674,6 @@ app.get("/mahasiswa", (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      // res.status(500).send("gagal diserver internalnya!");
       res.render("mahasiswa", {
         selectedData,
         dataMahasiswa: [],
@@ -744,7 +724,7 @@ app.post("/tambahMahasiswa", (req, res) => {
         (err, results) => {
           const result = JSON.parse(JSON.stringify(results[0]));
           con.query(
-            `INSERT INTO admin (email_mahasiswa, nim_mahasiswa) VALUES ('${result.email_mahasiswa}', ${result.nim_mahasiswa})`,
+            `INSERT INTO user (email_mahasiswa, nim_mahasiswa) VALUES ('${result.email_mahasiswa}', ${result.nim_mahasiswa})`,
             (err, results) => {
               if (err) reject(err);
               resolve("Tambah Data Berhasil");
@@ -810,7 +790,7 @@ app.post("/editMahasiswa", (req, res) => {
   const editData = () => {
     return new Promise((resolve, reject) => {
       con.query(
-        `UPDATE data_mahasiswa SET nama_mahasiswa = '${nama_mahasiswa}', alamat_mahasiswa = '${alamat_mahasiswa}', email_mahasiswa = '${email_mahasiswa}', nh_mahasiswa = ${nh_mahasiswa} WHERE nim_mahasiswa = ${nim_mahasiswa}`,
+        `UPDATE data_mahasiswa SET nama_mahasiswa = '${nama_mahasiswa}', alamat_mahasiswa = '${alamat_mahasiswa}', email_mahasiswa = '${email_mahasiswa}', nh_mahasiswa = '${nh_mahasiswa}' WHERE nim_mahasiswa = '${nim_mahasiswa}'`,
         (err, results) => {
           if (err) reject(err);
         }
@@ -820,9 +800,9 @@ app.post("/editMahasiswa", (req, res) => {
         (err, results) => {
           const result = JSON.parse(JSON.stringify(results[0]));
           con.query(
-            `UPDATE admin SET email_mahasiswa = '${result.email_mahasiswa}', nim_mahasiswa = ${result.nim_mahasiswa} WHERE email_mahasiswa = '${result.email_mahasiswa}')`,
+            `UPDATE user SET email_mahasiswa = '${result.email_mahasiswa}', nim_mahasiswa = '${result.nim_mahasiswa}' WHERE email_mahasiswa = '${result.email_mahasiswa}'`,
             (err, results) => {
-              if (err) reject(err);
+              if (err) reject(err + "ini errornya");
               resolve("Edit Data Berhasil");
             }
           );

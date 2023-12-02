@@ -51,13 +51,13 @@ window.addEventListener("click", (event) => {
     }
   }
 
-  if (Login.element && Login.pemicu) {
-    if (
-      !Login.element.contains(target) &&
-      !Login.pemicu.contains(target) &&
-      Login.status == "buka"
-    ) {
-      Login.show({});
+  if (Login.element) {
+    if (!Login.element.contains(target) && Login.status == "buka") {
+      if (Login.pemicu && !Login.pemicu.contains(target)) {
+        Login.show({});
+      } else if (!Login.pemicu) {
+        Login.show({});
+      }
     }
   }
 

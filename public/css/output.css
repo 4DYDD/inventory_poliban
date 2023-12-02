@@ -662,6 +662,50 @@ video {
   width: 100%;
 }
 
+.tw-w-\[70vw\] {
+  width: 70vw;
+}
+
+.tw-w-\[100vw\] {
+  width: 100vw;
+}
+
+.tw-w-\[65vw\] {
+  width: 65vw;
+}
+
+.tw-w-\[10vw\] {
+  width: 10vw;
+}
+
+.\!tw-w-\[10vw\] {
+  width: 10vw !important;
+}
+
+.\!tw-w-\[60vw\] {
+  width: 60vw !important;
+}
+
+.\!tw-w-full {
+  width: 100% !important;
+}
+
+.tw-w-\[20vw\] {
+  width: 20vw;
+}
+
+.tw-w-\[18vw\] {
+  width: 18vw;
+}
+
+.tw-w-\[16vw\] {
+  width: 16vw;
+}
+
+.tw-w-\[90\%\] {
+  width: 90%;
+}
+
 .tw-min-w-\[25vw\] {
   min-width: 25vw;
 }
@@ -1028,10 +1072,6 @@ video {
   font-size: 2vw;
 }
 
-.tw-text-\[3vw\] {
-  font-size: 3vw;
-}
-
 .tw-font-normal {
   font-weight: 400;
 }
@@ -1256,6 +1296,22 @@ video {
     max-height: 200vh;
   }
 
+  .portrait\:tw-w-\[50\%\] {
+    width: 50%;
+  }
+
+  .portrait\:tw-w-\[80vw\] {
+    width: 80vw;
+  }
+
+  .portrait\:tw-w-\[10vw\] {
+    width: 10vw;
+  }
+
+  .portrait\:\!tw-w-\[10vw\] {
+    width: 10vw !important;
+  }
+
   .portrait\:tw-flex-col {
     flex-direction: column;
   }
@@ -1266,5 +1322,21 @@ video {
 
   .portrait\:tw-text-\[2\.7vw\] {
     font-size: 2.7vw;
+  }
+
+  .portrait\:tw-text-\[3vw\] {
+    font-size: 3vw;
+  }
+
+  .portrait\:tw-text-\[2\.5vw\] {
+    font-size: 2.5vw;
+  }
+
+  .portrait\:tw-text-\[2vw\] {
+    font-size: 2vw;
+  }
+
+  .portrait\:tw-text-\[1vw\] {
+    font-size: 1vw;
   }
 }
