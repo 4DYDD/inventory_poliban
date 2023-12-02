@@ -25,15 +25,61 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body class="tw-bg-[rgb(244,255,254)] tw-tracking-wide tw-text-[1.15vw]" style="font-family: Nunito">
-    <!-- <i class="bi-shield-lock"></i> -->
-    <main
-        class="portrait:tw-max-h-[200vh] tw-max-h-[100vh] tw-max-w-[100vw] p-3 d-flex flex-column justify-content-center align-items-center gap-3">
-        <%- body %>
-    </main>
+<% if (berhasil[0]==='login' ){ %>
 
-    <script src="../../script/script.js"></script>
+    <body class="tw-bg-[rgb(244,255,254)] tw-tracking-wide tw-text-[1.15vw]" onload="Login.show({})"
+        style="font-family: Nunito">
+        <% }else if (berhasil[0]==="admin" ) { %>
 
-</body>
+            <body class="tw-bg-[rgb(244,255,254)] tw-tracking-wide tw-text-[1.15vw]" onload="Admin.show({})"
+                style="font-family: Nunito">
+                <% }else{ %>
+
+                    <body class="tw-bg-[rgb(244,255,254)] tw-tracking-wide tw-text-[1.15vw]"
+                        style="font-family: Nunito">
+                        <% } %>
+                            <!-- <i class="bi-shield-lock"></i> -->
+
+                            <!-- ALERT KITA -->
+                            <% if (berhasil) { %>
+                                <% if (berhasil[0]==false) { %>
+                                    <div class="alert alert-danger tw-min-w-[25vw] d-flex position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out"
+                                        id="alertnya" role="alert">
+                                        <div>
+                                            <%- berhasil[1] %>!
+                                        </div>
+                                    </div>
+                                    <% }else if (berhasil[0]==true) { %>
+                                        <div class="alert alert-success tw-min-w-[25vw] d-flex position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out"
+                                            id="alertnya" role="alert">
+                                            <div>
+                                                <%- berhasil[1] %>!
+                                            </div>
+                                        </div>
+                                        <% }else if (berhasil[0]==='login' ){ %>
+                                            <div class="alert alert-warning !tw-bg-yellow-200 tw-min-w-[25vw] d-flex position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out"
+                                                id="alertnya" role="alert">
+                                                <div>
+                                                    <%- berhasil[1] %>!
+                                                </div>
+                                            </div>
+                                            <% }else if (berhasil[0]==='admin' ){%>
+                                                <div class="alert alert-warning !tw-bg-yellow-300 tw-min-w-[25vw] d-flex position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out"
+                                                    id="alertnya" role="alert">
+                                                    <div>
+                                                        <%- berhasil[1] %>!
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                    <% } %>
+                                                        <!-- ALERT KITA -->
+                                                        <main
+                                                            class="portrait:tw-max-h-[200vh] tw-max-h-[100vh] tw-max-w-[100vw] p-3 d-flex flex-column justify-content-center align-items-center gap-3">
+                                                            <%- body %>
+                                                        </main>
+
+                                                        <script src="../../script/script.js"></script>
+
+                    </body>
 
 </html>

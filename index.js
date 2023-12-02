@@ -10,59 +10,6 @@ app.set("views", "./public/view");
 app.use(express.static("./public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(expressLayouts);
-app.use(
-  session({
-    secret: "rahasia", // kunci rahasia untuk menandatangani cookie sesi
-    resave: false, // apakah sesi harus disimpan ulang meskipun tidak ada perubahan
-    saveUninitialized: true, // apakah sesi harus dibuat sebelum ada data
-    cookie: { secure: true }, // berapa lama cookie sesi akan berlaku (dalam milidetik)
-  })
-);
-app.use(function (req, res, next) {
-  res.locals.user = session.user;
-  res.locals.errorMessage = session.errorMessage;
-  next();
-});
-
-const info = {
-  berhasil: "",
-  gagal: "",
-  cari: "",
-  halaman: "",
-};
-let selectedData = "";
-
-session.user = {};
-session.user.username = "";
-session.user.password = "";
-
-let usernamenya;
-let passwordnya;
-
-app.post("/login", function (req, res) {
-  // Menyimpan data user di sesi
-  if (req.body.username === usernamenya && req.body.password === passwordnya) {
-    session.user.username = req.body.username;
-    session.user.password = req.body.password;
-    res.redirect("/");
-  }
-});
-
-app.get("/logout", function (req, res) {
-  // Mengakhiri sesi
-  session.user.username = "";
-  session.user.password = "";
-  req.session.destroy();
-  // Mengarahkan ke halaman utama
-  res.redirect("/");
-});
-
-app.get("/error", function (req, res) {
-  session.errorMessage = "";
-  req.session.destroy();
-
-  res.redirect("/");
-});
 
 const con = mysql.createConnection({
   host: "localhost",
@@ -79,37 +26,181 @@ con.connect((err) => {
   console.log("Connected to MySQL as id " + con.threadId);
 });
 
-//TODO MIDDLEWARE UNTUK MENANGANI HALAMAN UTAMA
+const info = {
+  berhasil: "",
+  gagal: "",
+  cari: "",
+  halaman: "",
+  sesi: {
+    nimMahasiswa: "",
+    emailMahasiswa: "",
+    kodeAdmin: "",
+    passwordAdmin: "",
+    sesiTerbuka: false,
+  },
+};
+
+const kataMutiara = () =>
+  "bread_is_roti_shadow_is_bayang_before_kita_mati_better_kita_sembahyang";
+
+let selectedData = "";
+
+function isiSesi(
+  nimMahasiswa,
+  emailMahasiswa,
+  kodeAdmin,
+  passwordAdmin,
+  sesiTerbuka
+) {
+  info.sesi.nimMahasiswa = nimMahasiswa;
+  info.sesi.emailMahasiswa = emailMahasiswa;
+  info.sesi.kodeAdmin = kodeAdmin;
+  info.sesi.passwordAdmin = passwordAdmin;
+  info.sesi.sesiTerbuka = sesiTerbuka;
+}
+
+function hapusSesi() {
+  info.sesi = {
+    nimMahasiswa: "",
+    emailMahasiswa: "",
+    kodeAdmin: "",
+    passwordAdmin: "",
+    sesiTerbuka: false,
+  };
+}
+
+const validasiUser = (req, res) => {
+  if (!info.sesi.nimMahasiswa && !info.sesi.emailMahasiswa) {
+    info.berhasil = [
+      "login",
+      "Silahkan Masuk sebagai Pengguna terlebih dahulu",
+    ];
+    res.redirect("/");
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const validasiAdmin = (req, res) => {
+  if (!info.sesi.kodeAdmin && !info.sesi.passwordAdmin) {
+    info.berhasil = [
+      "admin",
+      "Anda harus menjadi Admin untuk membuka menu Admin",
+    ];
+    res.redirect("/");
+    return false;
+  } else {
+    return true;
+  }
+};
+
+//TODO --> MENGURUSI MASALAH LOGIN--LOGOUT
+app.post("/login", (req, res) => {
+  const { nim_mahasiswa, email_mahasiswa } = req.body;
+
+  const getData = () => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM user WHERE nim_mahasiswa = '${nim_mahasiswa}' AND email_mahasiswa = '${email_mahasiswa}'`,
+        (err, results) => {
+          if (err) reject([false, err]);
+          const result = JSON.parse(JSON.stringify(results));
+          if (result.length > 0) {
+            resolve([true, "Login Berhasil"]);
+          } else {
+            reject([false, "Login gagal"]);
+          }
+        }
+      );
+    });
+  };
+
+  getData()
+    .then((infonya) => {
+      //* handle berhasil
+      isiSesi(nim_mahasiswa, email_mahasiswa, "", "", true);
+      console.log(typeof info.sesi.nimMahasiswa);
+      console.log(info.sesi.nimMahasiswa);
+      info.berhasil = infonya;
+      res.redirect("/");
+    })
+    .catch((err) => {
+      //! --> handle error
+      info.berhasil = err;
+      res.redirect("/");
+    });
+});
+app.post("/admin", (req, res) => {
+  const { kode_admin, password_admin } = req.body;
+
+  const getData = () => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM user WHERE kode_admin = '${kode_admin}' AND password_admin = '${password_admin}'`,
+        (err, results) => {
+          if (err) reject([false, err]);
+          const result = JSON.parse(JSON.stringify(results));
+          if (result.length > 0) {
+            resolve([true, "Login Admin Berhasil"]);
+          } else {
+            reject([false, "Login gagal"]);
+          }
+        }
+      );
+    });
+  };
+
+  getData()
+    .then((infonya) => {
+      //* handle berhasil
+      isiSesi("", "", kode_admin, password_admin, true);
+      info.berhasil = infonya;
+      res.redirect("/");
+    })
+    .catch((err) => {
+      //! --> handle error
+      info.berhasil = err;
+      res.redirect("/");
+    });
+});
+app.get("/logout/:laksanakan", (req, res) => {
+  if (req.params.laksanakan === kataMutiara()) {
+    hapusSesi();
+    res.redirect("/");
+  }
+});
+//TODO --> MENGURUSI MASALAH LOGIN--LOGOUT
+
+//TODO --> HALAMAN USER
 app.get("/", (req, res) => {
   info.halaman = "PeminjamanUser";
 
   const getData = () => {
     return new Promise((resolve, reject) => {
+      //! NANTI INI DIGANTI JADI NIM MAHASISWA YANG DARI SESSION
+      const { nimMahasiswa, emailMahasiswa } = info.sesi;
       con.query(
-        `SELECT * FROM info_peminjaman WHERE nim_mahasiswa = 34532`,
+        `SELECT * FROM info_peminjaman WHERE nim_mahasiswa = '${nimMahasiswa}' AND status != 'diterima'`,
         (err, results) => {
-          if (err) reject(err);
-
-          const idBarang = JSON.parse(JSON.stringify(results[0]));
-          console.log(idBarang);
-          const nimMahasiswa = JSON.parse(
-            JSON.stringify(results[0].nim_mahasiswa)
-          );
-          const barangDipinjam = JSON.parse(
-            JSON.stringify(results[0].barang_dipinjam)
-          );
-          // JARAK
-          con.query(
-            `SELECT * FROM barang WHERE id_barang = ${idBarang}`,
-            (err, results) => {
-              const result = JSON.parse(JSON.stringify(results[0]));
-              result.barangDipinjam = barangDipinjam;
-              result.nimMahasiswa = nimMahasiswa;
-              if (err) reject(err);
-              resolve(result);
-            }
-          );
-          // JARAK
+          const result = JSON.parse(JSON.stringify(results));
+          if (result.length < 1) {
+            reject({ pesan: info.berhasil, status: "tidak meminjam" });
+          } else {
+            const { id_barang, nim_mahasiswa, barang_dipinjam, status } =
+              result[0];
+            con.query(
+              `SELECT * FROM barang WHERE id_barang = ${id_barang}`,
+              (err, results) => {
+                const result = JSON.parse(JSON.stringify(results[0]));
+                result.id_barang = id_barang;
+                result.nimMahasiswa = nim_mahasiswa;
+                result.barangDipinjam = barang_dipinjam;
+                if (err) reject(err);
+                resolve({ result, status });
+              }
+            );
+          }
         }
       );
     });
@@ -117,26 +208,35 @@ app.get("/", (req, res) => {
 
   getData()
     .then((dataPeminjaman) => {
+      const { result, status } = dataPeminjaman;
       res.render("dashboard-view", {
-        dataPeminjaman,
+        value: { result, status },
         berhasil: info.berhasil,
+        sesinya: info.sesi,
+        sesiTerbuka: info.sesi.sesiTerbuka,
         layout: "layouts/dashboard",
         title: "Halaman Utama Inventory Poliban",
       });
+
       info.berhasil = "";
     })
-    .catch((err) => {
-      console.error(err);
-      // res.status(500).send("gagal diserver internalnya!");
+    .catch((infonya) => {
+      const { pesan, status } = infonya;
       res.render("dashboard-view", {
+        value: { dataPeminjaman: {}, status },
+        berhasil: pesan,
+        sesinya: info.sesi,
+        sesiTerbuka: info.sesi.sesiTerbuka,
         layout: "layouts/dashboard",
-        title: "Halaman Dashboard Poliban",
+        title: "Halaman Utama Inventory Poliban",
       });
+
       info.berhasil = "";
     });
 });
 
 app.get("/peminjaman/user", (req, res) => {
+  if (!validasiUser(req, res)) return;
   info.halaman = "PeminjamanUser";
 
   const getData = () => {
@@ -192,12 +292,16 @@ app.get("/peminjaman/user", (req, res) => {
 });
 
 app.post("/cariPeminjamanUser", (req, res) => {
+  if (!validasiUser(req, res)) return;
+
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/peminjaman/user");
 });
 
 app.get("/pilihBarangDipinjam/:primary", (req, res) => {
+  if (!validasiUser(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -223,6 +327,8 @@ app.get("/pilihBarangDipinjam/:primary", (req, res) => {
 });
 
 app.post("/pinjamBarang", (req, res) => {
+  if (!validasiUser(req, res)) return;
+
   const {
     nama_barang,
     kategori_barang,
@@ -284,6 +390,7 @@ app.post("/pinjamBarang", (req, res) => {
         );
       } else {
         info.berhasil = [false, infonya.pesan];
+        console.log("INI ERRORNYA");
         console.error(infonya.pesan);
         res.redirect("/peminjaman/user");
       }
@@ -295,18 +402,23 @@ app.post("/pinjamBarang", (req, res) => {
 });
 
 app.post("/kembalikanBarang", (req, res) => {
-  const { nim_mahasiswa } = req.body;
+  if (!validasiUser(req, res)) return;
+
+  const { nim_mahasiswa, barang_dipinjam, id_barang } = req.body;
   const editData = () => {
     return new Promise((resolve, reject) => {
       con.query(
         `UPDATE info_peminjaman SET status = 'mengembalikan' WHERE nim_mahasiswa = ${nim_mahasiswa}`
       );
       con.query(
-        `UPDATE barang jumlah_barang = jumlah_barang + ${jumlah_barang_dipinjam}, dipinjam = dipinjam - ${jumlah_barang_dipinjam} WHERE id_barang = ${id_barang}`,
+        `UPDATE barang SET jumlah_barang = jumlah_barang + ${barang_dipinjam}, dipinjam = dipinjam - ${barang_dipinjam} WHERE id_barang = ${id_barang}`,
         (err) => {
           if (err) reject(err);
         }
       );
+      con.query(`UPDATE `, (err) => {
+        if (err) reject(err);
+      });
       resolve("Barang berhasil dikembalikan");
     });
   };
@@ -322,11 +434,14 @@ app.post("/kembalikanBarang", (req, res) => {
       res.redirect("/");
     });
 });
-//TODO MIDDLEWARE UNTUK MENANGANI HALAMAN UTAMA
+//TODO --> HALAMAN USER
 
 //TODO MIDDLEWARE UNTUK MENANGANI HALAMAN BARANG
 //HALAMAN BARANG
 app.get("/barang", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   info.halaman = "Barang";
 
   const getData = () => {
@@ -383,6 +498,9 @@ app.get("/barang", (req, res) => {
 
 //MW BARANG YANG DICARI
 app.post("/cariBarang", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/barang");
@@ -390,6 +508,9 @@ app.post("/cariBarang", (req, res) => {
 
 //TAMBAH BARANG
 app.post("/tambahBarang", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const {
     nama_barang,
     kategori_barang,
@@ -423,6 +544,9 @@ app.post("/tambahBarang", (req, res) => {
 
 //MW BARANG YANG DIPILIH
 app.get("/pilihBarang/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -449,6 +573,9 @@ app.get("/pilihBarang/:primary", (req, res) => {
 
 //EDIT BARANG
 app.post("/editBarang", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const {
     nama_barang,
     kategori_barang,
@@ -482,6 +609,9 @@ app.post("/editBarang", (req, res) => {
 
 //HAPUS BARANG
 app.get("/hapusBarang/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -522,6 +652,9 @@ app.get("/hapusBarang/:primary", (req, res) => {
 //TODO MIDDLEWARE UNTUK MENANGANI HALAMAN MAHASISWA
 //HALAMAN MAHASISWA
 app.get("/mahasiswa", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   info.halaman = "Mahasiswa";
 
   const getData = () => {
@@ -578,6 +711,9 @@ app.get("/mahasiswa", (req, res) => {
 
 //MW MAHASISWA YANG DICARI
 app.post("/cariMahasiswa", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/mahasiswa");
@@ -585,6 +721,9 @@ app.post("/cariMahasiswa", (req, res) => {
 
 //TAMBAH MAHASISWA
 app.post("/tambahMahasiswa", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const {
     nama_mahasiswa,
     alamat_mahasiswa,
@@ -598,7 +737,19 @@ app.post("/tambahMahasiswa", (req, res) => {
         `INSERT INTO data_mahasiswa (nama_mahasiswa, alamat_mahasiswa, email_mahasiswa, nh_mahasiswa) VALUES ('${nama_mahasiswa}', '${alamat_mahasiswa}', '${email_mahasiswa}', '${nh_mahasiswa}')`,
         (err, results) => {
           if (err) reject(err);
-          resolve("Tambah Data Berhasil");
+        }
+      );
+      con.query(
+        `SELECT * FROM data_mahasiswa WHERE email_mahasiswa = '${email_mahasiswa}'`,
+        (err, results) => {
+          const result = JSON.parse(JSON.stringify(results[0]));
+          con.query(
+            `INSERT INTO admin (email_mahasiswa, nim_mahasiswa) VALUES ('${result.email_mahasiswa}', ${result.nim_mahasiswa})`,
+            (err, results) => {
+              if (err) reject(err);
+              resolve("Tambah Data Berhasil");
+            }
+          );
         }
       );
     });
@@ -618,6 +769,9 @@ app.post("/tambahMahasiswa", (req, res) => {
 
 //MW MAHASISWA YANG DIPILIH
 app.get("/pilihMahasiswa/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -643,6 +797,9 @@ app.get("/pilihMahasiswa/:primary", (req, res) => {
 
 //EDIT MAHASISWA
 app.post("/editMahasiswa", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const {
     nama_mahasiswa,
     alamat_mahasiswa,
@@ -656,7 +813,19 @@ app.post("/editMahasiswa", (req, res) => {
         `UPDATE data_mahasiswa SET nama_mahasiswa = '${nama_mahasiswa}', alamat_mahasiswa = '${alamat_mahasiswa}', email_mahasiswa = '${email_mahasiswa}', nh_mahasiswa = ${nh_mahasiswa} WHERE nim_mahasiswa = ${nim_mahasiswa}`,
         (err, results) => {
           if (err) reject(err);
-          resolve("Edit Data Berhasil");
+        }
+      );
+      con.query(
+        `SELECT * FROM data_mahasiswa WHERE email_mahasiswa = '${email_mahasiswa}'`,
+        (err, results) => {
+          const result = JSON.parse(JSON.stringify(results[0]));
+          con.query(
+            `UPDATE admin SET email_mahasiswa = '${result.email_mahasiswa}', nim_mahasiswa = ${result.nim_mahasiswa} WHERE email_mahasiswa = '${result.email_mahasiswa}')`,
+            (err, results) => {
+              if (err) reject(err);
+              resolve("Edit Data Berhasil");
+            }
+          );
         }
       );
     });
@@ -676,6 +845,9 @@ app.post("/editMahasiswa", (req, res) => {
 
 //HAPUS MAHASISWA
 app.get("/hapusMahasiswa/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -709,6 +881,9 @@ app.get("/hapusMahasiswa/:primary", (req, res) => {
 //TODO MIDDLEWARE UNTUK MENANGANI HALAMAN PEMINJAMAN
 //HALAMAN PEMINJAMAN
 app.get("/peminjaman", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   info.halaman = "Peminjaman";
 
   const getData = () => {
@@ -766,6 +941,9 @@ app.get("/peminjaman", (req, res) => {
 });
 
 app.get("/dipinjamkan/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -806,12 +984,17 @@ app.get("/dipinjamkan/:primary", (req, res) => {
       res.redirect("/peminjaman");
     });
 });
+
 app.get("/diterima/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
         `SELECT * FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
         (err, results) => {
+          if (err) reject(err);
           const result = JSON.parse(JSON.stringify(results[0]));
           con.query(
             `UPDATE barang SET jumlah_barang = jumlah_barang + ${result.barang_dipinjam}, dipinjam = dipinjam - ${result.barang_dipinjam} WHERE id_barang = ${result.id_barang}`
@@ -842,6 +1025,9 @@ app.get("/diterima/:primary", (req, res) => {
 
 //MW PEMINJAMAN YANG DICARI
 app.post("/cariPeminjaman", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/peminjaman");
@@ -849,6 +1035,9 @@ app.post("/cariPeminjaman", (req, res) => {
 
 //TAMBAH PEMINJAMAN
 app.post("/tambahPeminjaman", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const { id_peminjaman, waktu_peminjaman, id_barang, nim_mahasiswa } =
     req.body;
   const tambahData = () => {
@@ -877,6 +1066,9 @@ app.post("/tambahPeminjaman", (req, res) => {
 
 //MW PEMINJAMAN YANG DIPILIH
 app.get("/pilihPeminjaman/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -903,6 +1095,9 @@ app.get("/pilihPeminjaman/:primary", (req, res) => {
 
 //EDIT PEMINJAMAN
 app.post("/editPeminjaman", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const { waktu_peminjaman, id_barang, nim_mahasiswa, status, id_peminjaman } =
     req.body;
   const editData = () => {
@@ -930,6 +1125,9 @@ app.post("/editPeminjaman", (req, res) => {
 
 //HAPUS BARANG
 app.get("/hapusPeminjaman/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -954,5 +1152,31 @@ app.get("/hapusPeminjaman/:primary", (req, res) => {
     });
 });
 //TODO MIDDLEWARE UNTUK MENANGANI HALAMAN PEMINJAMAN
+
+//TODO --> MENANGANI JIKA USER MEMASUKKAN SEMBARANG URL
+app.use((req, res) => {
+  res.send(
+    `<html><head><link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" /><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" /><link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Creepster&family=Hind:wght@300&family=Manjari&family=Nunito&family=Quicksand:wght@700&family=Skranji&family=Titillium+Web&family=Yatra+One&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script></head>
+        <body class="bg-[rgb(252,252,252)] tw-tracking-wide tw-text-[1.15vw]" style="font-family: Nunito">
+        <div class="alert alert-danger tw-min-w-[25vw] d-flex flex-column justify-content-center align-items-center gap-3 position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out" id="alertnya" role="alert">
+        <div>Halaman (<b>${req.originalUrl}</b>) tidak Ditemukan!</div>
+        <div class="btn btn-warning" onclick="goTo('/', {delay: 100})">Kembali</div>
+        </div>
+        <script src="../../script/script.js"></script>
+        </body>
+        </html>`
+  );
+});
+//TODO --> MENANGANI JIKA USER MEMASUKKAN SEMBARANG URL
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

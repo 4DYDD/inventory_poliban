@@ -87,7 +87,6 @@
                                                                 </div>
                                                                 <% } %>
                                                                     <% if (halaman !=="PeminjamanUser" ) { %>
-
                                                                         <div
                                                                             class="tw-max-w-[30vw] hover:tw-cursor-pointer hover:tw-pointer-events-auto m-0 tw-relative tw-bg-blue-50 d-flex justify-content-start align-items-center tw-border-blue-300 tw-border-[1px] rounded overflow-hidden tw-transition-all tw-duration-300 tw-ease-in-out">
                                                                             <div
@@ -115,6 +114,10 @@
                                                                                     ? 'selected' : '' %>>Tabel
                                                                                     Peminjaman</option>
                                                                             </select>
+                                                                        </div>
+                                                                        <div class="text-center py-1 px-3 tw-rounded tw-bg-red-50 tw-border tw-border-red-300 hover:tw-bg-red-400 hover:tw-text-white hover:tw-cursor-pointer tw-transition-all tw-duration-200 tw-ease-in-out"
+                                                                            onclick="goTo(`/logout/bread_is_roti_shadow_is_bayang_before_kita_mati_better_kita_sembahyang`, {delay : 300})">
+                                                                            Logout
                                                                         </div>
                                                                         <% } %>
 

@@ -17,53 +17,139 @@
                     </div>
                 </div>
             </div>
-            <div class="tw-w-full d-flex justify-content-end">
-                <div
-                    class="d-flex flex-column justify-content-center align-items-center tw-w-[80%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                    <div class="tw-w-full text-start tw-select-none">
-                        Anda bisa meminjam barang yang tersedia dengan masuk kedalam halaman <b>peminjaman barang</b>
-                        melalui
-                        tombol dibawah ini :</div>
-                    <div class="tw-w-full tw-flex py-1 tw-justify-start">
-                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-400 hover:tw-bg-cyan-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out"
-                            onclick="goTo(`/peminjaman/user`,{delay: 100})">
-                            PINJAM BARANG
+            <% if (!sesiTerbuka) { %>
+                <!-- LOGIN -->
+                <div class="tw-w-full d-flex justify-content-end">
+                    <div
+                        class="d-flex flex-column justify-content-center align-items-center tw-w-[60%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+                        <div class="tw-w-full text-start tw-select-none">
+                            <b>Masuk sebagai Pengguna agar bisa meminjam
+                                barang!</b><br>
+                            Anda bisa menjadi Pengguna dengan menekan tombol
+                            dibawah ini
+                            :
+                        </div>
+                        <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-teal-400 hover:tw-bg-teal-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-32 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addLoginnya"
+                                onclick="Login.show({})">
+                                LOGIN
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!-- LOGIN -->
+                <% } %>
 
-            <div class="tw-w-full d-flex justify-content-end">
-                <div
-                    class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                    <div class="tw-w-full text-start tw-select-none">
-                        <b>Anda ingin mengembalikan barang?</b><br>
-                        Anda bisa masuk sebagai
-                        admin tombol dibawah ini :
-                    </div>
-                    <div class="tw-w-full tw-flex py-1 tw-justify-start">
-                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-sky-400 hover:tw-bg-sky-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addDatanya   "
-                            onclick="Tambah.show({delay: 300})">
-                            KEMBALIKAN BARANG
+                    <% if (value.status==="tidak meminjam" ) { %>
+                        <!-- PINJAM BARANG -->
+                        <div class="tw-w-full d-flex justify-content-end">
+                            <div
+                                class="d-flex flex-column justify-content-center align-items-center tw-w-[80%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+                                <div class="tw-w-full text-start tw-select-none">
+                                    Anda bisa meminjam barang yang tersedia dengan masuk kedalam halaman <b>peminjaman
+                                        barang</b>
+                                    melalui
+                                    tombol dibawah ini :</div>
+                                <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                    <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-400 hover:tw-bg-cyan-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out"
+                                        onclick="goTo(`/peminjaman/user`,{delay: 300})">
+                                        PINJAM BARANG
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <!-- PINJAM BARANG -->
+                        <% } %>
 
-            <div class="tw-w-full d-flex justify-content-start">
-                <div
-                    class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                    <div class="tw-w-full text-start"><b>Ingin jadi Admin?</b> <br> Anda bisa masuk sebagai admin
-                        melalui
-                        tombol
-                        dibawah ini :</div>
-                    <div class="tw-w-full tw-flex py-1 tw-justify-start">
-                        <div
-                            class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-40 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out">
-                            JADI ADMIN</div>
-                    </div>
-                </div>
-            </div>
+                            <% if (value.status==="dipinjamkan" ) { %>
+                                <!-- KEMBALIKAN BARANG -->
+                                <div class="tw-w-full d-flex justify-content-end">
+                                    <div
+                                        class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+                                        <div class="tw-w-full text-start tw-select-none">
+                                            <b>Anda ingin mengembalikan barang?</b><br>
+                                            Anda bisa masuk sebagai
+                                            admin tombol dibawah ini :
+                                        </div>
+                                        <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-sky-400 hover:tw-bg-sky-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addDatanya"
+                                                onclick="Tambah.show({delay: 300})">
+                                                KEMBALIKAN BARANG
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- KEMBALIKAN BARANG -->
+                                <% } %>
+
+                                    <% if (!sesinya.kodeAdmin) { %>
+                                        <!-- JADI ADMIN -->
+                                        <div class="tw-w-full d-flex justify-content-start">
+                                            <div
+                                                class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+                                                <div class="tw-w-full text-start"><b>Ingin jadi Admin?</b> <br>
+                                                    Anda
+                                                    bisa
+                                                    masuk
+                                                    sebagai
+                                                    admin
+                                                    melalui
+                                                    tombol
+                                                    dibawah ini :</div>
+                                                <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                                    <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-40 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
+                                                        onclick="Admin.show({delay: 300})">
+                                                        JADI ADMIN</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- JADI ADMIN -->
+                                        <% }else{ %>
+                                            <div class="tw-w-full d-flex justify-content-start">
+                                                <div
+                                                    class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+                                                    <div class="tw-w-full text-start"><b>Menu Admin :</b> <br>
+
+                                                    </div>
+                                                    <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
+                                                            onclick="goTo(`/barang`, {delay: 300})">
+                                                            DATA BARANG</div>
+                                                    </div>
+                                                    <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
+                                                            onclick="goTo(`/mahasiswa`, {delay: 300})">
+                                                            DATA MAHASISWA</div>
+                                                    </div>
+                                                    <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
+                                                            onclick="goTo(`/peminjaman`, {delay: 300})">
+                                                            DATA PEMINJAMAN</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% } %>
+
+                                                <% if ( sesiTerbuka ) { %>
+                                                    <!-- LOGOUT -->
+                                                    <div class="tw-w-full d-flex justify-content-end">
+                                                        <div
+                                                            class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+                                                            <div class="tw-w-full text-start tw-select-none">
+                                                                <b>Ingin keluar dari sesi?</b><br>
+                                                                Anda bisa keluar dengan menekan tombol dibawah ini :
+                                                            </div>
+                                                            <div class="tw-w-full tw-flex py-1 tw-justify-start">
+                                                                <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-red-400 hover:tw-bg-red-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-32 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out"
+                                                                    onclick="goTo(`/logout/bread_is_roti_shadow_is_bayang_before_kita_mati_better_kita_sembahyang`, {delay : 300})">
+                                                                    LOGOUT
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- LOGOUT -->
+                                                    <% } %>
+
         </div>
     </div>
     <div class="d-flex flex-column gap-2">
@@ -162,52 +248,116 @@
         <!-- DATA MAHASISWA -->
     </div>
 
-    <!-- INPUT ADD -->
-    <div
-        class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
-        <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-            Kembalikan Barang
-        </div>
+    <!-- INPUT KEMBALIKAN -->
+    <% if (value.status==="dipinjamkan" ) { %>
+        <div
+            class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
+            <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+                Kembalikan Barang
+            </div>
 
-        <form action="/kembalikanBarang" method="post" class="d-flex flex-column w-100 form--add">
-            <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-                style="border-radius: 4px 4px 0px 0px">
-                <span class="text-left" style="width: 15vw">Id Barang</span>
-                <input type=" text" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang"
-                    value="<%= dataPeminjaman.id_barang ?? 'eaerawer' %>" readonly required />
+            <form action="/kembalikanBarang" method="post" class="d-flex flex-column w-100 form--add">
+                <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
+                    style="border-radius: 4px 4px 0px 0px">
+                    <span class="text-left" style="width: 15vw">Id Barang</span>
+                    <input type=" text" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang"
+                        value="<%= value.dataPeminjaman.id_barang ?? 'eaerawer' %>" readonly required />
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
+                    style="border-radius: 4px 4px 0px 0px">
+                    <span class="text-left" style="width: 15vw">Nama Barang</span>
+                    <input type=" text" class="form-control !tw-bg-blue-50" name="nama_barang" placeholder="nama barang"
+                        value="<%= value.dataPeminjaman.nama_barang ?? '' %>" readonly required />
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
+                    <span class="text-left" style="width: 15vw">Kategori Barang</span>
+                    <input type=" text" class="form-control !tw-bg-blue-50" name="kategori_barang"
+                        placeholder="jenis barang" value="<%= value.dataPeminjaman.kategori_barang ?? '' %>" readonly
+                        required />
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
+                    <span class="text-left" style="width: 15vw">Gambar Barang</span>
+                    <input type=" text" class="form-control !tw-bg-blue-50" name="gambar_barang" id="gambarBarang"
+                        placeholder="gambar barang" value="<%= value.dataPeminjaman.gambar_barang ?? '' %>" readonly
+                        required />
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
+                    <span class="text-left" style="width: 15vw">Barang yang harus dikembalikan</span>
+                    <input type="number" class="form-control !tw-bg-blue-50" name="barang_dipinjam" id="barangDipinjam"
+                        placeholder="barang dipinjam" value="<%= value.dataPeminjaman.barangDipinjam %>" readonly
+                        required />
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
+                    <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
+                    <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" id="nimMahasiswa"
+                        placeholder="nim mahasiswa" value="<%= value.dataPeminjaman.nimMahasiswa %>" readonly
+                        required />
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
+                    style="border-radius: 0px 0px 4px 4px">
+                    <button type="submit" class="btn btn-outline-success px-4">kembalikan</button>
+                    <button type="reset" class="btn btn-outline-info px-4">reset</button>
+                </div>
+            </form>
+        </div>
+        <% } %>
+            <!-- INPUT KEMBALIKAN -->
+
+            <!-- INPUT LOGIN -->
+            <div
+                class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--login">
+                <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+                    Login
+                </div>
+
+                <form action="/login" method="post" class="d-flex flex-column w-100 form--add">
+                    <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
+                        style="border-radius: 4px 4px 0px 0px">
+                        <span class="text-left" style="width: 15vw">nim mahasiswa</span>
+                        <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa"
+                            placeholder="nim mahasiswa" required />
+                    </div>
+                    <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
+                        style="border-radius: 4px 4px 0px 0px">
+                        <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
+                        <input type="email" class="form-control !tw-bg-blue-50" name="email_mahasiswa"
+                            placeholder="email mahasiswa" required />
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
+                        style="border-radius: 0px 0px 4px 4px">
+                        <button type="submit" class="btn btn-outline-success px-4">login</button>
+                        <button type="reset" class="btn btn-outline-info px-4">reset</button>
+                    </div>
+                </form>
             </div>
-            <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-                style="border-radius: 4px 4px 0px 0px">
-                <span class="text-left" style="width: 15vw">Nama Barang</span>
-                <input type=" text" class="form-control !tw-bg-blue-50" name="nama_barang" placeholder="nama barang"
-                    value="<%= dataPeminjaman.nama_barang ?? '' %>" readonly required />
+            <!-- INPUT LOGIN -->
+
+            <!-- INPUT ADMIN -->
+            <div
+                class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--admin">
+                <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+                    Admin
+                </div>
+
+                <form action="/admin" method="post" class="d-flex flex-column w-100 form--add">
+                    <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
+                        style="border-radius: 4px 4px 0px 0px">
+                        <span class="text-left" style="width: 15vw">Kode Admin</span>
+                        <input type="texta" class="form-control !tw-bg-blue-50" name="kode_admin"
+                            placeholder="kode admin" required />
+                    </div>
+                    <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
+                        style="border-radius: 4px 4px 0px 0px">
+                        <span class="text-left" style="width: 15vw">Password Admin</span>
+                        <input type="password" class="form-control !tw-bg-blue-50" name="password_admin"
+                            placeholder="password admin" required />
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
+                        style="border-radius: 0px 0px 4px 4px">
+                        <button type="submit" class="btn btn-outline-success px-4">login</button>
+                        <button type="reset" class="btn btn-outline-info px-4">reset</button>
+                    </div>
+                </form>
             </div>
-            <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-                <span class="text-left" style="width: 15vw">Kategori Barang</span>
-                <input type=" text" class="form-control !tw-bg-blue-50" name="kategori_barang"
-                    placeholder="jenis barang" value="<%= dataPeminjaman.kategori_barang ?? '' %>" readonly required />
-            </div>
-            <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-                <span class="text-left" style="width: 15vw">Gambar Barang</span>
-                <input type=" text" class="form-control !tw-bg-blue-50" name="gambar_barang" id="gambarBarang"
-                    placeholder="gambar barang" value="<%= dataPeminjaman.gambar_barang ?? '' %>" readonly required />
-            </div>
-            <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-                <span class="text-left" style="width: 15vw">Barang yang harus dikembalikan</span>
-                <input type="number" class="form-control !tw-bg-blue-50" name="barang_dipinjam" id="barangDipinjam"
-                    placeholder="barang dipinjam" value="<%= dataPeminjaman.barangDipinjam %>" readonly required />
-            </div>
-            <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-                <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
-                <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" id="nimMahasiswa"
-                    placeholder="nim mahasiswa" value="<%= dataPeminjaman.nimMahasiswa %>" readonly required />
-            </div>
-            <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
-                style="border-radius: 0px 0px 4px 4px">
-                <button type="submit" class="btn btn-outline-success px-4">kembalikan</button>
-                <button type="reset" class="btn btn-outline-info px-4">reset</button>
-            </div>
-        </form>
-    </div>
-    <!-- INPUT ADD -->
+            <!-- INPUT LOGIN -->
 </div>

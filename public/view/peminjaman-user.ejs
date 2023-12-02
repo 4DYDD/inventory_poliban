@@ -69,10 +69,18 @@
                                     class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
                                     detail
                                 </div>
-                                <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
-                                    onclick="goTo(`/pilihBarangDipinjam/<%=barang.id_barang%>`, {delay : 100});">
-                                    pinjam
-                                </div>
+                                <% if (berhasil[0]==true) { %>
+                                    <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
+                                        onclick="goTo(`/pilihBarangDipinjam/<%=barang.id_barang%>`, {delay : 100});">
+                                        Kembalikan
+                                    </div>
+                                    <% }else{ %>
+                                        <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
+                                            onclick="goTo(`/pilihBarangDipinjam/<%=barang.id_barang%>`, {delay : 100});">
+                                            pinjam
+                                        </div>
+                                        <% } %>
+
                             </div>
                         </td>
                     </tr>
