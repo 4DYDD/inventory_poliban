@@ -51,6 +51,12 @@ window.addEventListener("click", (event) => {
     }
   }
 
+  if (Detail.element) {
+    if (!Detail.element.contains(target) && Detail.status == "buka") {
+      Detail.show({});
+    }
+  }
+
   if (Login.element) {
     if (!Login.element.contains(target) && Login.status == "buka") {
       if (Login.pemicu && !Login.pemicu.contains(target)) {
@@ -126,4 +132,5 @@ const Login = new elementCRUD(
   document.querySelector(".input--login"),
   document.querySelector(".addLoginnya")
 );
+const Detail = new elementCRUD(document.querySelector(".input--detail"));
 const Edit = new elementCRUD(document.querySelector(".input--edit"));

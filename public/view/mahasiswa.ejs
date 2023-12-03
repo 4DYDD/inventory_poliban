@@ -1,174 +1,178 @@
 <!-- TABEL KITA -->
-<table
-    class="text-center tw-text-[1.2vw] portrait:tw-text-[2.7vw] rounded shadow-sm overflow-hidden tw-w-[96vw] tw-border-separate tw-border-spacing-[1px] tw-border tw-bg-blue-200">
-    <thead class="tw-h-[50px]">
-        <tr class="tw-bg-[rgb(224,237,255)]">
-            <th>no</th>
-            <th>nim mahasiswa</th>
-            <th>nama mahasiswa</th>
-            <th>alamat mahasiswa</th>
-            <th>email mahasiswa</th>
-            <th>nomor mahasiswa</th>
-            <th class="tw-w-[17vw]">opsi</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% if (dataMahasiswa.length < 1) { %>
-            <tr>
-                <th colspan="7" class="bg-warning text-white tw-tracking-wide tw-text-[1vw]">
-                    TIDAK ADA (<%= cari %>) DIDALAM DATABASE!
-                </th>
-            </tr>
-            <% } %>
-                <% dataMahasiswa.forEach((mahasiswa, i)=> {i++ %>
-                    <tr class="hover:tw-bg-blue-50 tw-bg-white">
-                        <th class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= i %>
-                                </p>
-                            </div>
-                        </th>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= mahasiswa.nim_mahasiswa %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= mahasiswa.nama_mahasiswa %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[15vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= mahasiswa.alamat_mahasiswa %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[15vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= mahasiswa.email_mahasiswa %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= mahasiswa.nh_mahasiswa %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="p-2">
-                            <div class="d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap gap-1">
-                                <div
-                                    class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
-                                    detail
-                                </div>
-                                <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
-                                    onclick="goTo(`/pilihMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100});">
-                                    edit
-                                </div>
-                                <div class="text-white tw-bg-red-400 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
-                                    onclick="goTo(`/hapusMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100})">
-                                    hapus
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <% }) %>
-    </tbody>
+<table class="text-center tw-text-[1.2vw] portrait:tw-text-[2.7vw] rounded shadow-sm overflow-hidden tw-w-[96vw] tw-border-separate tw-border-spacing-[1px] tw-border tw-bg-blue-200">
+  <thead class="tw-h-[50px]">
+    <tr class="tw-bg-[rgb(224,237,255)]">
+      <th>no</th>
+      <th>nim mahasiswa</th>
+      <th>nama mahasiswa</th>
+      <th>jenkel mahasiswa</th>
+      <th>alamat mahasiswa</th>
+      <th>email mahasiswa</th>
+      <th>nomor mahasiswa</th>
+      <th class="tw-w-[17vw]">opsi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (dataMahasiswa.length < 1) { %>
+    <tr>
+      <th colspan="7" class="bg-warning text-white tw-tracking-wide tw-text-[1vw]">
+        TIDAK ADA (<%= cari %>) DIDALAM DATABASE!
+      </th>
+    </tr>
+    <% } %>
+    <% dataMahasiswa.forEach((mahasiswa, i)=> {i++ %>
+    <tr class="hover:tw-bg-blue-50 tw-bg-white">
+      <th class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-3 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= i %>
+          </p>
+        </div>
+      </th>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= mahasiswa.nim_mahasiswa %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= mahasiswa.nama_mahasiswa %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= mahasiswa.jenkel_mahasiswa %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[15vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= mahasiswa.alamat_mahasiswa %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[15vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= mahasiswa.email_mahasiswa %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= mahasiswa.nh_mahasiswa %>
+          </p>
+        </div>
+      </td>
+      <td class="p-2">
+        <div class="gap-1 d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap">
+          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
+            detail
+          </div>
+          <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/pilihMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100});">
+            edit
+          </div>
+          <div class="text-white tw-bg-red-400 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/hapusMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100})">
+            hapus
+          </div>
+        </div>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
 </table>
 <!-- TABEL KITA -->
 
 <!-- INPUT ADD -->
-<div
-    class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
-    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-        Tambah Data
-    </div>
+<div class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
+  <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Tambah Mahasiswa
+  </div>
 
-    <form action="/tambahMahasiswa" method="post" class="d-flex flex-column w-100 form--add">
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-            style="border-radius: 4px 4px 0px 0px">
-            <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
-            <input type=" text" class="form-control" name="nama_mahasiswa" id="namaMahasiswa"
-                placeholder="nama mahasiswa" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
-            <input type=" text" class="form-control" name="alamat_mahasiswa" id="alamatMahasiswa"
-                placeholder="alamat mahasiswa" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
-            <input type=" text" class="form-control" name="email_mahasiswa" id="emailMahasiswa"
-                placeholder="email mahasiswa" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Nomor Mahasiswa</span>
-            <input type="number" class="form-control" name="nh_mahasiswa" id="nhMahasiswa" placeholder="nomor mahasiswa"
-                required />
-        </div>
-        <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
-            style="border-radius: 0px 0px 4px 4px">
-            <button type="submit" class="btn btn-outline-success px-4">kirim</button>
-            <button type="reset" class="btn btn-outline-info px-4">reset</button>
-        </div>
-    </form>
+  <form action="/tambahMahasiswa" method="post" class="d-flex flex-column w-100 form--add">
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
+      <input type=" text" class="form-control" name="nama_mahasiswa" id="namaMahasiswa" placeholder="nama mahasiswa" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
+      <select name="jenkel_mahasiswa" class="form-select">
+        <option value="kosong" selected>Pilih Jenkel</option>
+        <option value="laki-laki">Laki-Laki</option>
+        <option value="perempuan">Perempuan</option>
+      </select>
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
+      <input type=" text" class="form-control" name="alamat_mahasiswa" id="alamatMahasiswa" placeholder="alamat mahasiswa" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
+      <input type="email" class="form-control" name="email_mahasiswa" id="emailMahasiswa" placeholder="email mahasiswa" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Nomor Mahasiswa</span>
+      <input type="number" class="form-control" name="nh_mahasiswa" id="nhMahasiswa" placeholder="nomor mahasiswa" required />
+    </div>
+    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+      <button type="submit" class="px-4 btn btn-outline-success">kirim</button>
+      <button type="reset" class="px-4 btn btn-outline-info">reset</button>
+    </div>
+  </form>
 </div>
 <!-- INPUT ADD -->
 
 <!-- INPUT EDIT -->
-<div
-    class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--edit">
-    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-        Edit Data
-    </div>
+<div class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--edit">
+  <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Edit Mahasiswa
+  </div>
 
-    <!-- FORM EDIT -->
-    <form action="/editMahasiswa" method="post" class="d-flex flex-column w-100 form--add">
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-            style="border-radius: 4px 4px 0px 0px">
-            <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
-            <input type=" text" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" placeholder="nim mahasiswa"
-                value="<%= selectedData.nim_mahasiswa ?? 'eaerawer' %>" readonly required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-            style="border-radius: 4px 4px 0px 0px">
-            <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
-            <input type=" text" class="form-control" name="nama_mahasiswa" placeholder="nama mahasiswa"
-                value="<%= selectedData.nama_mahasiswa ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
-            <input type="text" class="form-control" name="alamat_mahasiswa" placeholder="alamat mahasiswa"
-                value="<%= selectedData.alamat_mahasiswa ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
-            <input type="text" class="form-control" name="email_mahasiswa" placeholder="email mahasiswa"
-                value="<%= selectedData.email_mahasiswa ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Nomor Mahasiswa</span>
-            <input type="number" class="form-control" name="nh_mahasiswa" placeholder="nomor mahasiswa"
-                value="<%= selectedData.nh_mahasiswa ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
-            style="border-radius: 0px 0px 4px 4px">
-            <button type="submit" class="btn btn-outline-success px-4">
-                edit
-            </button>
-            <button type="reset" class="btn btn-outline-info px-4">
-                reset
-            </button>
-        </div>
-    </form>
+  <!-- FORM EDIT -->
+  <form action="/editMahasiswa" method="post" class="d-flex flex-column w-100 form--add">
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
+      <input type="text" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" placeholder="nim mahasiswa" value="<%= selectedData.nim_mahasiswa ?? 'eaerawer' %>" readonly required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
+      <input type="text" class="form-control" name="nama_mahasiswa" placeholder="nama mahasiswa" value="<%= selectedData.nama_mahasiswa ?? '' %>" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Jenkel Mahasiswa</span>
+      <select name="jenkel_mahasiswa" class="form-select">
+        <option value="kosong" <%- selectedData.jenkel_mahasiswa === 'kosong' ? 'selected' : ''%>>Pilih Jenkel</option>
+        <option value="laki-laki" <%- selectedData.jenkel_mahasiswa === 'Laki-Laki' ? 'selected' : ''%>>Laki-Laki</option>
+        <option value="perempuan" <%- selectedData.jenkel_mahasiswa === 'Perempuan' ? 'selected' : ''%>>Perempuan</option>
+      </select>
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
+      <input type="text" class="form-control" name="alamat_mahasiswa" placeholder="alamat mahasiswa" value="<%= selectedData.alamat_mahasiswa ?? '' %>" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
+      <input type="email" class="form-control" name="email_mahasiswa" placeholder="email mahasiswa" value="<%= selectedData.email_mahasiswa ?? '' %>" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Nomor Mahasiswa</span>
+      <input type="number" class="form-control" name="nh_mahasiswa" placeholder="nomor mahasiswa" value="<%= selectedData.nh_mahasiswa ?? '' %>" required />
+    </div>
+    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+      <button type="submit" class="px-4 btn btn-outline-success">
+        edit
+      </button>
+      <button type="reset" class="px-4 btn btn-outline-info">
+        reset
+      </button>
+    </div>
+  </form>
 </div>
 <!-- INPUT EDIT -->

@@ -1,181 +1,206 @@
 <!-- TABEL KITA -->
-<table
-    class="text-center tw-text-[1.2vw] portrait:tw-text-[2.7vw] rounded shadow-sm overflow-hidden tw-w-[96vw] tw-border-separate tw-border-spacing-[1px] tw-border tw-bg-blue-200">
-    <thead class="tw-h-[50px]">
-        <tr class="tw-bg-[rgb(224,237,255)]">
-            <th>no</th>
-            <th>gambar barang</th>
-            <th>id barang</th>
-            <th>nama barang</th>
-            <th>jenis barang</th>
-            <th>jumlah barang</th>
-            <th>barang dipinjam</th>
-            <th class="tw-w-[17vw]">opsi</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% if (dataBarang.length < 1) { %>
-            <tr>
-                <th colspan="8" class="bg-warning text-white tw-tracking-wide tw-text-[1vw]">
-                    TIDAK ADA (<%= cari %>) DIDALAM DATABASE!
-                </th>
-            </tr>
-            <% } %>
-                <% dataBarang.forEach((barang, i)=> {i++ %>
-                    <tr class="hover:tw-bg-blue-50 tw-bg-white">
-                        <th class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= i %>
-                                </p>
-                            </div>
-                        </th>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <img src="<%= barang.gambar_barang %>" width="45"
-                                    alt="gambar <%= barang.nama_barang %>">
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= barang.id_barang %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= barang.nama_barang %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= barang.kategori_barang %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= barang.jumlah_barang %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="tw-max-w-[10vw]">
-                            <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
-                                <p class="m-auto px-2 tw-text-ellipsis tw-whitespace-normal">
-                                    <%= barang.dipinjam %>
-                                </p>
-                            </div>
-                        </td>
-                        <td class="p-2">
-                            <div class="d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap gap-1">
-                                <div
-                                    class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
-                                    detail
-                                </div>
-                                <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
-                                    onclick="goTo(`/pilihBarang/<%=barang.id_barang%>`, {delay : 100});">
-                                    edit
-                                </div>
-                                <div class="text-white tw-bg-red-400 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]"
-                                    onclick="goTo(`/hapusBarang/<%=barang.id_barang%>`, {delay : 100})">
-                                    hapus
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <% }) %>
-    </tbody>
+<table class="text-center tw-text-[1.2vw] portrait:tw-text-[2.7vw] rounded shadow-sm overflow-hidden tw-w-[96vw] tw-border-separate tw-border-spacing-[1px] tw-border tw-bg-blue-200">
+  <thead class="tw-h-[50px]">
+    <tr class="tw-bg-[rgb(224,237,255)]">
+      <th>no</th>
+      <th>gambar barang</th>
+      <th>id barang</th>
+      <th>nama barang</th>
+      <th>jenis barang</th>
+      <th>jumlah barang</th>
+      <th>barang dipinjam</th>
+      <th class="tw-w-[17vw]">opsi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (dataBarang.length < 1) { %>
+    <tr>
+      <th colspan="8" class="bg-warning text-white tw-tracking-wide tw-text-[1vw]">
+        TIDAK ADA (<%= cari %>) DIDALAM DATABASE!
+      </th>
+    </tr>
+    <% } %>
+    <% dataBarang.forEach((barang, i)=> {i++ %>
+    <tr class="hover:tw-bg-blue-50 tw-bg-white">
+      <th class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= i %>
+          </p>
+        </div>
+      </th>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <img src="<%= barang.gambar_barang %>" width="45" alt="gambar <%= barang.nama_barang %>">
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= barang.id_barang %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= barang.nama_barang %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= barang.kategori_barang %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= barang.jumlah_barang %>
+          </p>
+        </div>
+      </td>
+      <td class="tw-max-w-[10vw]">
+        <div class="tw-h-[7vh] overflow-auto d-flex justify-content-center align-items-center">
+          <p class="px-2 m-auto tw-text-ellipsis tw-whitespace-normal">
+            <%= barang.dipinjam %>
+          </p>
+        </div>
+      </td>
+      <td class="p-2">
+        <div class="gap-1 d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap">
+          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/detailBarang/<%=barang.id_barang%>`, {delay : 100})">
+            detail
+          </div>
+          <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/pilihBarang/<%=barang.id_barang%>`, {delay : 100})">
+            edit
+          </div>
+          <div class="text-white tw-bg-red-400 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/hapusBarang/<%=barang.id_barang%>`, {delay : 100})">
+            hapus
+          </div>
+        </div>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
 </table>
 <!-- TABEL KITA -->
 
-<!-- INPUT ADD -->
-<div
-    class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
-    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-        Tambah Data
-    </div>
+<!-- DETAIL -->
+<div class="tw-p-1 tw-min-w-[90vw] tw-max-w-[90vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[52%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--detail">
+  <div class="tw-bg-[rgb(156,195,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Detail Peminjaman
+  </div>
 
-    <form action="/tambahBarang" method="post" class="d-flex flex-column w-100 form--add">
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-            style="border-radius: 4px 4px 0px 0px">
-            <span class="text-left" style="width: 15vw">Nama Barang</span>
-            <input type=" text" class="form-control" name="nama_barang" id="namaBarang" placeholder="nama barang"
-                required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Kategori Barang</span>
-            <input type=" text" class="form-control" name="kategori_barang" id="namaBarang" placeholder="jenis barang"
-                required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Jumlah Barang</span>
-            <input type="number" class="form-control" name="jumlah_barang" id="namaBarang" placeholder="jumlah barang"
-                required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Gambar Barang</span>
-            <input type=" text" class="form-control" name="gambar_barang" id="gambarBarang" placeholder="gambar barang"
-                required />
-        </div>
-        <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
-            style="border-radius: 0px 0px 4px 4px">
-            <button type="submit" class="btn btn-outline-success px-4">kirim</button>
-            <button type="reset" class="btn btn-outline-info px-4">reset</button>
-        </div>
-    </form>
+  <!-- FORM DETAIL -->
+  <form action="/editPeminjaman" method="post" class="flex-wrap gap-1 tw-w-full d-flex portrait:tw-flex-col align-items-center form--add">
+
+    <!-- GAMBAR -->
+    <div class="d-flex justify-content-evenly align-items-center bg-white p-2 tw-w-[49.8%] tw-h-[40vh] rounded overflow-hidden">
+      <img src="<%= selectedData.gambar_barang %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar <%= selectedData.nama_barang %>" />
+      <input type="text" class="form-control !tw-bg-blue-50" name="gambar_barang" placeholder="gambar barang" value="<%= selectedData.gambar_barang %>" readonly hidden />
+    </div>
+    <!-- GAMBAR -->
+
+    <!-- BARANG -->
+    <div class="d-flex flex-column tw-w-[49.8%] tw-h-[40vh] rounded overflow-hidden">
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Id Barang</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang" value="<%= selectedData.id_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Nama Barang</span>
+        <input type=" text" class="form-control !tw-bg-blue-50" name="nama_barang" placeholder="nama barang" value="<%= selectedData.nama_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Kategori Barang</span>
+        <input type=" text" class="form-control !tw-bg-blue-50" name="kategori_barang" placeholder="jenis barang" value="<%= selectedData.kategori_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Jumlah Barang</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="jumlah_barang" placeholder="jumlah barang" value="<%= selectedData.jumlah_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Barang Dipinjam</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="barang_dipinjam" placeholder="jumlah barang" value="<%= selectedData.dipinjam ?? '' %>" readonly required disabled />
+      </div>
+    </div>
+    <!-- BARANG -->
+
+  </form>
+  <!-- FORM DETAIL -->
+</div>
+<!-- DETAIL -->
+
+<!-- INPUT ADD -->
+<div class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
+  <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Tambah Data
+  </div>
+
+  <form action="/tambahBarang" method="post" class="d-flex flex-column w-100 form--add">
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Nama Barang</span>
+      <input type=" text" class="form-control" name="nama_barang" id="namaBarang" placeholder="nama barang" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Kategori Barang</span>
+      <input type=" text" class="form-control" name="kategori_barang" id="namaBarang" placeholder="jenis barang" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Jumlah Barang</span>
+      <input type="number" class="form-control" name="jumlah_barang" id="namaBarang" placeholder="jumlah barang" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Gambar Barang</span>
+      <input type=" text" class="form-control" name="gambar_barang" id="gambarBarang" placeholder="gambar barang" required />
+    </div>
+    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+      <button type="submit" class="px-4 btn btn-outline-success">kirim</button>
+      <button type="reset" class="px-4 btn btn-outline-info">reset</button>
+    </div>
+  </form>
 </div>
 <!-- INPUT ADD -->
 
 <!-- INPUT EDIT -->
-<div
-    class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--edit">
-    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-        Edit Data
-    </div>
+<div class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--edit">
+  <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Edit Data
+  </div>
 
-    <!-- FORM EDIT -->
-    <form action="/editBarang" method="post" class="d-flex flex-column w-100 form--add">
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-            style="border-radius: 4px 4px 0px 0px">
-            <span class="text-left" style="width: 15vw">Id Barang</span>
-            <input type=" text" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang"
-                value="<%= selectedData.id_barang ?? 'eaerawer' %>" readonly required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2"
-            style="border-radius: 4px 4px 0px 0px">
-            <span class="text-left" style="width: 15vw">Nama Barang</span>
-            <input type=" text" class="form-control" name="nama_barang" placeholder="nama barang"
-                value="<%= selectedData.nama_barang ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Kategori Barang</span>
-            <input type=" text" class="form-control" name="kategori_barang" placeholder="jenis barang"
-                value="<%= selectedData.kategori_barang ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Jumlah Barang</span>
-            <input type="number" class="form-control" name="jumlah_barang" placeholder="jumlah barang"
-                value="<%= selectedData.jumlah_barang ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-evenly align-items-center bg-white p-2">
-            <span class="text-left" style="width: 15vw">Gambar Barang</span>
-            <input type=" text" class="form-control" name="gambar_barang" id="gambarBarang" placeholder="gambar barang"
-                value="<%= selectedData.gambar_barang ?? '' %>" required />
-        </div>
-        <div class="d-flex justify-content-center align-items-center gap-5 bg-white p-3"
-            style="border-radius: 0px 0px 4px 4px">
-            <button type="submit" class="btn btn-outline-success px-4">
-                edit
-            </button>
-            <button type="reset" class="btn btn-outline-info px-4">
-                reset
-            </button>
-        </div>
-    </form>
+  <!-- FORM EDIT -->
+  <form action="/editBarang" method="post" class="d-flex flex-column w-100 form--add">
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Id Barang</span>
+      <input type=" text" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang" value="<%= selectedData.id_barang ?? 'eaerawer' %>" readonly required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+      <span class="text-left" style="width: 15vw">Nama Barang</span>
+      <input type=" text" class="form-control" name="nama_barang" placeholder="nama barang" value="<%= selectedData.nama_barang ?? '' %>" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Kategori Barang</span>
+      <input type=" text" class="form-control" name="kategori_barang" placeholder="jenis barang" value="<%= selectedData.kategori_barang ?? '' %>" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Jumlah Barang</span>
+      <input type="number" class="form-control" name="jumlah_barang" placeholder="jumlah barang" value="<%= selectedData.jumlah_barang ?? '' %>" required />
+    </div>
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+      <span class="text-left" style="width: 15vw">Gambar Barang</span>
+      <input type=" text" class="form-control" name="gambar_barang" id="gambarBarang" placeholder="gambar barang" value="<%= selectedData.gambar_barang ?? '' %>" required />
+    </div>
+    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+      <button type="submit" class="px-4 btn btn-outline-success">
+        edit
+      </button>
+      <button type="reset" class="px-4 btn btn-outline-info">
+        reset
+      </button>
+    </div>
+  </form>
 </div>
 <!-- INPUT EDIT -->

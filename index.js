@@ -37,6 +37,9 @@ const info = {
     kodeAdmin: "",
     passwordAdmin: "",
     sesiTerbuka: false,
+    tanggal: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`,
   },
 };
 
@@ -190,7 +193,7 @@ app.get("/", (req, res) => {
             const { id_barang, nim_mahasiswa, barang_dipinjam, status } =
               result[0];
             con.query(
-              `SELECT * FROM barang WHERE id_barang = ${id_barang}`,
+              `SELECT * FROM barang WHERE id_barang = '${id_barang}'`,
               (err, results) => {
                 const result = JSON.parse(JSON.stringify(results[0]));
                 result.id_barang = id_barang;
@@ -337,8 +340,16 @@ app.post("/pinjamBarang", (req, res) => {
     jumlah_barang_dipinjam,
     id_barang,
     nim_peminjam,
-    waktu_meminjam,
+    tanggal_meminjam,
+    tanggal_mengembalikan,
   } = req.body;
+  const tanggalMeminjam = new Date(tanggal_meminjam).toLocaleDateString(
+    "id-ID"
+  );
+  const tanggalMengembalikan = new Date(
+    tanggal_mengembalikan
+  ).toLocaleDateString("id-ID");
+
   const editData = () => {
     return new Promise((resolve, reject) => {
       con.query(
@@ -356,7 +367,7 @@ app.post("/pinjamBarang", (req, res) => {
             );
           } else {
             con.query(
-              `INSERT INTO info_peminjaman (waktu_peminjaman, id_barang, barang_dipinjam, nim_mahasiswa, status) VALUES ('${waktu_meminjam}', '${id_barang}', ${jumlah_barang_dipinjam}, '${nim_peminjam}', 'meminjam')`,
+              `INSERT INTO info_peminjaman (tanggal_meminjam, tanggal_mengembalikan, id_barang, barang_dipinjam, nim_mahasiswa, status) VALUES ('${tanggalMeminjam}', '${tanggalMengembalikan}', '${id_barang}', ${jumlah_barang_dipinjam}, '${nim_peminjam}', 'meminjam')`,
               (err, results) => {
                 if (err) {
                   reject(err);
@@ -397,9 +408,6 @@ app.post("/kembalikanBarang", (req, res) => {
           if (err) reject(err);
         }
       );
-      con.query(`UPDATE `, (err) => {
-        if (err) reject(err);
-      });
       resolve("Barang berhasil dikembalikan");
     });
   };
@@ -421,7 +429,7 @@ app.post("/kembalikanBarang", (req, res) => {
 //HALAMAN BARANG
 app.get("/barang", (req, res) => {
   //* --> CEK ADMIN
-  if (!validasiAdmin(req, res)) return;
+  //FIXME if (!validasiAdmin(req, res)) return;
 
   info.halaman = "Barang";
 
@@ -485,6 +493,36 @@ app.post("/cariBarang", (req, res) => {
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/barang");
+});
+
+app.get("/detailBarang/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  //FIXME if (!validasiAdmin(req, res)) return;
+
+  const getData = () => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM barang WHERE id_barang = '${req.params.primary}'`,
+        (err, results) => {
+          if (err) reject(err);
+          const result = JSON.parse(JSON.stringify(results[0]));
+          console.log(result);
+          resolve(result);
+        }
+      );
+    });
+  };
+
+  getData()
+    .then((dataBarang) => {
+      selectedData = dataBarang;
+      selectedData.isinya = true;
+      res.redirect("/barang");
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    });
 });
 
 //TAMBAH BARANG
@@ -706,6 +744,7 @@ app.post("/tambahMahasiswa", (req, res) => {
 
   const {
     nama_mahasiswa,
+    jenkel_mahasiswa,
     alamat_mahasiswa,
     email_mahasiswa,
     nh_mahasiswa,
@@ -714,7 +753,7 @@ app.post("/tambahMahasiswa", (req, res) => {
   const tambahData = () => {
     return new Promise((resolve, reject) => {
       con.query(
-        `INSERT INTO data_mahasiswa (nama_mahasiswa, alamat_mahasiswa, email_mahasiswa, nh_mahasiswa) VALUES ('${nama_mahasiswa}', '${alamat_mahasiswa}', '${email_mahasiswa}', '${nh_mahasiswa}')`,
+        `INSERT INTO data_mahasiswa (nama_mahasiswa, jenkel_mahasiswa, alamat_mahasiswa, email_mahasiswa, nh_mahasiswa) VALUES ('${nama_mahasiswa}', '${jenkel_mahasiswa}', '${alamat_mahasiswa}', '${email_mahasiswa}', '${nh_mahasiswa}')`,
         (err, results) => {
           if (err) reject(err);
         }
@@ -782,6 +821,7 @@ app.post("/editMahasiswa", (req, res) => {
 
   const {
     nama_mahasiswa,
+    jenkel_mahasiswa,
     alamat_mahasiswa,
     email_mahasiswa,
     nh_mahasiswa,
@@ -790,11 +830,12 @@ app.post("/editMahasiswa", (req, res) => {
   const editData = () => {
     return new Promise((resolve, reject) => {
       con.query(
-        `UPDATE data_mahasiswa SET nama_mahasiswa = '${nama_mahasiswa}', alamat_mahasiswa = '${alamat_mahasiswa}', email_mahasiswa = '${email_mahasiswa}', nh_mahasiswa = '${nh_mahasiswa}' WHERE nim_mahasiswa = '${nim_mahasiswa}'`,
+        `UPDATE data_mahasiswa SET nama_mahasiswa = '${nama_mahasiswa}', jenkel_mahasiswa = '${jenkel_mahasiswa}', alamat_mahasiswa = '${alamat_mahasiswa}', email_mahasiswa = '${email_mahasiswa}', nh_mahasiswa = '${nh_mahasiswa}' WHERE nim_mahasiswa = '${nim_mahasiswa}'`,
         (err, results) => {
           if (err) reject(err);
         }
       );
+
       con.query(
         `SELECT * FROM data_mahasiswa WHERE email_mahasiswa = '${email_mahasiswa}'`,
         (err, results) => {
@@ -802,7 +843,7 @@ app.post("/editMahasiswa", (req, res) => {
           con.query(
             `UPDATE user SET email_mahasiswa = '${result.email_mahasiswa}', nim_mahasiswa = '${result.nim_mahasiswa}' WHERE email_mahasiswa = '${result.email_mahasiswa}'`,
             (err, results) => {
-              if (err) reject(err + "ini errornya");
+              if (err) reject(err);
               resolve("Edit Data Berhasil");
             }
           );
@@ -870,10 +911,10 @@ app.get("/peminjaman", (req, res) => {
     return new Promise((resolve, reject) => {
       if (info.cari) {
         con.query(
-          `SELECT * FROM info_peminjaman WHERE id_peminjaman LIKE '%${info.cari}%' OR waktu_peminjaman LIKE '%${info.cari}%' OR id_barang LIKE '%${info.cari}%' OR nim_mahasiswa LIKE '%${info.cari}%' OR status LIKE '%${info.cari}%'`,
+          `SELECT * FROM info_peminjaman WHERE id_peminjaman LIKE '%${info.cari}%' OR tanggal_meminjam LIKE '%${info.cari}%' OR tanggal_mengembalikan LIKE '%${info.cari}%' OR id_barang LIKE '%${info.cari}%' OR nim_mahasiswa LIKE '%${info.cari}%' OR status LIKE '%${info.cari}%'`,
           (err, results) => {
             if (err) reject(err);
-            resolve(results);
+            resolve(JSON.parse(JSON.stringify(results)));
           }
         );
       } else {
@@ -881,7 +922,7 @@ app.get("/peminjaman", (req, res) => {
           "SELECT * FROM info_peminjaman INNER JOIN barang ON info_peminjaman.id_barang = barang.id_barang INNER JOIN data_mahasiswa ON info_peminjaman.nim_mahasiswa = data_mahasiswa.nim_mahasiswa ORDER BY FIELD(status, 'meminjam') DESC, status;",
           (err, results) => {
             if (err) reject(err);
-            resolve(results);
+            resolve(JSON.parse(JSON.stringify(results)));
           }
         );
       }
@@ -892,7 +933,7 @@ app.get("/peminjaman", (req, res) => {
     .then((dataPeminjaman) => {
       res.render("peminjaman", {
         selectedData,
-        dataPeminjaman: JSON.parse(JSON.stringify(dataPeminjaman)),
+        dataPeminjaman,
         berhasil: info.berhasil,
         cari: info.cari,
         halaman: info.halaman,
@@ -956,7 +997,7 @@ app.get("/dipinjamkan/:primary", (req, res) => {
         `UPDATE info_peminjaman SET status = 'dipinjamkan' WHERE id_peminjaman = ${req.params.primary}`
       );
       info.berhasil = [true, infonya];
-      res.redirect("/peminjaman/user");
+      res.redirect("/peminjaman");
     })
     .catch((err) => {
       info.berhasil = [false, err];
@@ -1013,49 +1054,51 @@ app.post("/cariPeminjaman", (req, res) => {
   res.redirect("/peminjaman");
 });
 
-//TAMBAH PEMINJAMAN
-app.post("/tambahPeminjaman", (req, res) => {
-  //* --> CEK ADMIN
-  if (!validasiAdmin(req, res)) return;
+// //TAMBAH PEMINJAMAN
+// app.post("/tambahPeminjaman", (req, res) => {
+//   //* --> CEK ADMIN
+//   if (!validasiAdmin(req, res)) return;
 
-  const { id_peminjaman, waktu_peminjaman, id_barang, nim_mahasiswa } =
-    req.body;
-  const tambahData = () => {
-    return new Promise((resolve, reject) => {
-      con.query(
-        `INSERT INTO info_peminjaman (waktu_peminjaman, id_barang, nim_mahasiswa) VALUES ('${waktu_peminjaman}', '${id_barang}', '${nim_mahasiswa}')`,
-        (err, results) => {
-          if (err) reject(err);
-          resolve("Tambah Data Berhasil");
-        }
-      );
-    });
-  };
+//   const { id_peminjaman, waktu_peminjaman, id_barang, nim_mahasiswa } =
+//     req.body;
+//   const tambahData = () => {
+//     return new Promise((resolve, reject) => {
+//       con.query(
+//         `INSERT INTO info_peminjaman (waktu_peminjaman, id_barang, nim_mahasiswa) VALUES ('${waktu_peminjaman}', '${id_barang}', '${nim_mahasiswa}')`,
+//         (err, results) => {
+//           if (err) reject(err);
+//           resolve("Tambah Data Berhasil");
+//         }
+//       );
+//     });
+//   };
 
-  tambahData()
-    .then((infonya) => {
-      info.berhasil = [true, infonya];
-      res.redirect("/peminjaman");
-    })
-    .catch((err) => {
-      info.berhasil = [false, err];
-      console.log(err);
-      res.redirect("/peminjaman");
-    });
-});
+//   tambahData()
+//     .then((infonya) => {
+//       info.berhasil = [true, infonya];
+//       res.redirect("/peminjaman");
+//     })
+//     .catch((err) => {
+//       info.berhasil = [false, err];
+//       console.log(err);
+//       res.redirect("/peminjaman");
+//     });
+// });
 
 //MW PEMINJAMAN YANG DIPILIH
-app.get("/pilihPeminjaman/:primary", (req, res) => {
+app.get("/detailPinjam/:primary", (req, res) => {
   //* --> CEK ADMIN
   if (!validasiAdmin(req, res)) return;
 
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
-        `SELECT * FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
+        `SELECT * FROM info_peminjaman, data_mahasiswa, barang WHERE id_peminjaman = '${req.params.primary}'`,
         (err, results) => {
           if (err) reject(err);
-          resolve(results);
+          const result = JSON.parse(JSON.stringify(results[0]));
+          console.log(result);
+          resolve(result);
         }
       );
     });
@@ -1063,8 +1106,8 @@ app.get("/pilihPeminjaman/:primary", (req, res) => {
 
   getData()
     .then((dataPeminjaman) => {
-      selectedData = JSON.parse(JSON.stringify(dataPeminjaman[0]));
-      console.log(selectedData);
+      selectedData = dataPeminjaman;
+      selectedData.isinya = true;
       res.redirect("/peminjaman");
     })
     .catch((err) => {
@@ -1103,34 +1146,34 @@ app.post("/editPeminjaman", (req, res) => {
     });
 });
 
-//HAPUS BARANG
-app.get("/hapusPeminjaman/:primary", (req, res) => {
-  //* --> CEK ADMIN
-  if (!validasiAdmin(req, res)) return;
+// //HAPUS BARANG
+// app.get("/hapusPeminjaman/:primary", (req, res) => {
+//   //* --> CEK ADMIN
+//   if (!validasiAdmin(req, res)) return;
 
-  const getData = () => {
-    return new Promise((resolve, reject) => {
-      con.query(
-        `DELETE FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
-        (err, results) => {
-          if (err) reject(err);
-          resolve("Hapus Data Berhasil");
-        }
-      );
-    });
-  };
+//   const getData = () => {
+//     return new Promise((resolve, reject) => {
+//       con.query(
+//         `DELETE FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
+//         (err, results) => {
+//           if (err) reject(err);
+//           resolve("Hapus Data Berhasil");
+//         }
+//       );
+//     });
+//   };
 
-  getData()
-    .then((infonya) => {
-      info.berhasil = [true, infonya];
-      res.redirect("/peminjaman");
-    })
-    .catch((err) => {
-      info.berhasil = [false, err];
-      console.error(err);
-      res.redirect("/peminjaman");
-    });
-});
+//   getData()
+//     .then((infonya) => {
+//       info.berhasil = [true, infonya];
+//       res.redirect("/peminjaman");
+//     })
+//     .catch((err) => {
+//       info.berhasil = [false, err];
+//       console.error(err);
+//       res.redirect("/peminjaman");
+//     });
+// });
 //TODO MIDDLEWARE UNTUK MENANGANI HALAMAN PEMINJAMAN
 
 //TODO --> MENANGANI JIKA USER MEMASUKKAN SEMBARANG URL
