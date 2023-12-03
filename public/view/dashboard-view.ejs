@@ -1,371 +1,357 @@
 <div class="gap-3 tw-w-full d-flex justify-content-center align-items-center portrait:tw-flex-col">
-    <div class="tw-w-full tw-h-[91vh] d-flex flex-column justify-content-center align-items-center rounded shadow-sm"
-        style="background: url('https://4dydd.github.io/footage/porsenipoliban.jpg') center; background-size: 30%;">
-        <div
-            class="tw-w-full tw-h-full d-flex flex-column justify-content-center align-items-center p-3 tw-gap-[3vh] tw-bg-[rgba(228,255,254,0.95)] tw-border tw-border-sky-200 rounded">
-            <div
-                class="tw-w-full d-flex flex-column justify-content-center align-items-center text-center tw-text-[1.5vw] tw-py-2.5 tw-bg-[rgba(255,255,159,0.6)] tw-border tw-rounded-lg tw-rounded-t-none">
-                <img src="https://4dydd.github.io/footage/logopoliban.webp" alt="Logo" width="10%"
-                    class="tw-opacity-60" />
-                <div class="fw-bold tw-tracking-wide tw-text-blue-900 tw-opacity-60" style="font-family: Nunito;">
-                    <i class="bi-shield-lock tw-text-[1.3vw]"></i>
-                    Inventory Poliban
-                    <i class="bi-shield-lock tw-text-[1.3vw]"></i>
-                    <div class="tw-text-black tw-font-normal tw-text-[1vw]">Ini adalah halaman utama dari situs web
-                        <b>Inventory
-                            Poliban</b>.
-                    </div>
-                </div>
-            </div>
-            <% if (!sesiTerbuka) { %>
-                <!-- LOGIN -->
-                <div class="tw-w-full d-flex justify-content-end">
-                    <div
-                        class="d-flex flex-column justify-content-center align-items-center tw-w-[60%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                        <div class="tw-w-full text-start tw-select-none">
-                            <b>Masuk sebagai Pengguna agar bisa meminjam
-                                barang!</b><br>
-                            Anda bisa menjadi Pengguna dengan menekan tombol
-                            dibawah ini
-                            :
-                        </div>
-                        <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-teal-400 hover:tw-bg-teal-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-32 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addLoginnya"
-                                onclick="Login.show({})">
-                                LOGIN
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- LOGIN -->
-                <% } %>
-
-                    <% if (sesiTerbuka) { %>
-
-                        <% if (value.status==="tidak meminjam" ) { %>
-                            <!-- PINJAM BARANG -->
-                            <div class="tw-w-full d-flex justify-content-end">
-                                <div
-                                    class="d-flex flex-column justify-content-center align-items-center tw-w-[80%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                                    <div class="tw-w-full text-start tw-select-none">
-                                        Anda bisa meminjam barang yang tersedia dengan masuk kedalam halaman
-                                        <b>peminjaman
-                                            barang</b>
-                                        melalui
-                                        tombol dibawah ini :</div>
-                                    <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-400 hover:tw-bg-cyan-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out"
-                                            onclick="goTo(`/peminjaman/user`,{delay: 300})">
-                                            PINJAM BARANG
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- PINJAM BARANG -->
-                            <% } %>
-
-                                <% if (value.status==="dipinjamkan" ) { %>
-                                    <!-- KEMBALIKAN BARANG -->
-                                    <div class="tw-w-full d-flex justify-content-end">
-                                        <div
-                                            class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                                            <div class="tw-w-full text-start tw-select-none">
-                                                <b>Anda ingin mengembalikan barang?</b><br>
-                                                Anda bisa masuk sebagai
-                                                admin tombol dibawah ini :
-                                            </div>
-                                            <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                                                <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-sky-400 hover:tw-bg-sky-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addDatanya"
-                                                    onclick="Tambah.show({delay: 300})">
-                                                    KEMBALIKAN BARANG
-                                                </div>`
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- KEMBALIKAN BARANG -->
-                                    <% } %>
-                                    
-                                        <% } %>
-
-
-                                            <% if (!sesinya.kodeAdmin) { %>
-                                                <!-- JADI ADMIN -->
-                                                <div class="tw-w-full d-flex justify-content-start">
-                                                    <div
-                                                        class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                                                        <div class="tw-w-full text-start"><b>Ingin jadi Admin?</b> <br>
-                                                            Anda
-                                                            bisa
-                                                            masuk
-                                                            sebagai
-                                                            admin
-                                                            melalui
-                                                            tombol
-                                                            dibawah ini :</div>
-                                                        <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                                                            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-40 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
-                                                                onclick="Admin.show({delay: 300})">
-                                                                JADI ADMIN</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- JADI ADMIN -->
-                                                <% }else{ %>
-                                                    <div class="tw-w-full d-flex justify-content-start">
-                                                        <div
-                                                            class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                                                            <div class="tw-w-full text-start"><b>Menu Admin :</b> <br>
-
-                                                            </div>
-                                                            <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                                                                <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
-                                                                    onclick="goTo(`/barang`, {delay: 300})">
-                                                                    DATA BARANG</div>
-                                                            </div>
-                                                            <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                                                                <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
-                                                                    onclick="goTo(`/mahasiswa`, {delay: 300})">
-                                                                    DATA MAHASISWA</div>
-                                                            </div>
-                                                            <div class="py-1 tw-w-full tw-flex tw-justify-start">
-                                                                <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya"
-                                                                    onclick="goTo(`/peminjaman`, {delay: 300})">
-                                                                    DATA PEMINJAMAN</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <% } %>
-
-                                                        <% if ( sesiTerbuka ) { %>
-                                                            <!-- LOGOUT -->
-                                                            <div class="tw-w-full d-flex justify-content-end">
-                                                                <div
-                                                                    class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
-                                                                    <div class="tw-w-full text-start tw-select-none">
-                                                                        <b>Ingin keluar dari sesi?</b><br>
-                                                                        Anda bisa keluar dengan menekan tombol dibawah
-                                                                        ini :
-                                                                    </div>
-                                                                    <div
-                                                                        class="py-1 tw-w-full tw-flex tw-justify-start">
-                                                                        <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-red-400 hover:tw-bg-red-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-32 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out"
-                                                                            onclick="goTo(`/logout/bread_is_roti_shadow_is_bayang_before_kita_mati_better_kita_sembahyang`, {delay : 300})">
-                                                                            LOGOUT
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- LOGOUT -->
-                                                            <% } %>
-
+  <div class="tw-w-full tw-h-[91vh] d-flex flex-column justify-content-center align-items-center rounded shadow-sm" style="background: url('https://4dydd.github.io/footage/porsenipoliban.jpg') center; background-size: 30%;">
+    <div class="tw-w-full tw-h-full d-flex flex-column justify-content-center align-items-center p-3 tw-gap-[3vh] tw-bg-[rgba(228,255,254,0.95)] tw-border tw-border-sky-200 rounded">
+      <div class="tw-w-full d-flex flex-column justify-content-center align-items-center text-center tw-text-[1.5vw] tw-py-2.5 tw-bg-[rgba(255,255,159,0.6)] tw-border tw-rounded-lg tw-rounded-t-none">
+        <img src="https://4dydd.github.io/footage/logopoliban.webp" alt="Logo" width="10%" class="tw-opacity-60" />
+        <div class="fw-bold tw-tracking-wide tw-text-blue-900 tw-opacity-60" style="font-family: Nunito;">
+          <i class="bi-shield-lock tw-text-[1.3vw]"></i>
+          Inventory Poliban
+          <i class="bi-shield-lock tw-text-[1.3vw]"></i>
+          <div class="tw-text-black tw-font-normal tw-text-[1vw]">Ini adalah halaman utama dari situs web
+            <b>Inventory
+              Poliban</b>.
+          </div>
         </div>
+      </div>
+      <% if (!sesiTerbuka) { %>
+      <!-- LOGIN -->
+      <div class="tw-w-full d-flex justify-content-end">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[60%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start tw-select-none">
+            <b>Masuk sebagai Pengguna agar bisa meminjam
+              barang!</b><br>
+            Anda bisa menjadi Pengguna dengan menekan tombol
+            dibawah ini
+            :
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-teal-400 hover:tw-bg-teal-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-32 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addLoginnya" onclick="Login.show({})">
+              LOGIN
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- LOGIN -->
+      <% } %>
+
+      <% if (sesiTerbuka) { %>
+
+      <% if (dataPeminjaman.status==="tidak meminjam" ) { %>
+      <!-- PINJAM BARANG -->
+      <div class="tw-w-full d-flex justify-content-end">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[80%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start tw-select-none">
+            Anda bisa meminjam barang yang tersedia dengan masuk kedalam halaman
+            <b>peminjaman
+              barang</b>
+            melalui
+            tombol dibawah ini :
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-400 hover:tw-bg-cyan-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out" onclick="goTo(`/peminjaman/user`,{delay: 300})">
+              PINJAM BARANG
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PINJAM BARANG -->
+      <% } %>
+
+      <% if (dataPeminjaman.status==="dipinjamkan" ) { %>
+      <!-- KEMBALIKAN BARANG -->
+      <div class="tw-w-full d-flex justify-content-end">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start tw-select-none">
+            <b>Anda ingin mengembalikan barang?</b><br>
+            Anda bisa masuk sebagai
+            admin tombol dibawah ini :
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-sky-400 hover:tw-bg-sky-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-52 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addDatanya" onclick="Tambah.show({delay: 300})">
+              KEMBALIKAN BARANG
+            </div>`
+          </div>
+        </div>
+      </div>
+      <!-- KEMBALIKAN BARANG -->
+      <% } %>
+
+      <% if (dataPeminjaman.status==="mengembalikan" ) { %>
+      <!-- KEMBALIKAN BARANG -->
+      <div class="tw-w-full d-flex justify-content-end">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[60%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start tw-select-none">
+            <b>Barang yang anda kembalikan sedang di konfirmasi oleh Admin...</b><br>
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-left tw-text-[1vw] d-flex justify-content-center align-items-center p-2 rounded bg-warning hover:!tw-bg-yellow-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-70 tw-shadow tw-transition-all tw-duration-200 tw-ease-in-out gap-2">
+              <div class="tw-flex motion-reduce:tw-animate-pulse tw-opacity-100 justify-content-center align-items-center tw-rounded-[100%] tw-p-[3px] tw-m-0 tw-bg-orange-400">
+                <div class="tw-relative tw-animate-ping tw-rounded-[100%] tw-w-2 tw-p-[5px] tw-m-0 tw-bg-orange-300 tw-border-[1.5px] tw-border-x-orange-500 tw-border-y-red-400"></div>
+              </div>
+              <span>SEDANG DIKONFIRMASI...</span>
+            </div>`
+          </div>
+        </div>
+      </div>
+      <!-- KEMBALIKAN BARANG -->
+      <% } %>
+
+      <% } %>
+
+
+      <% if (!sesinya.kodeAdmin) { %>
+      <!-- JADI ADMIN -->
+      <div class="tw-w-full d-flex justify-content-start">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start"><b>Ingin jadi Admin?</b> <br>
+            Anda
+            bisa
+            masuk
+            sebagai
+            admin
+            melalui
+            tombol
+            dibawah ini :</div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-40 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya" onclick="Admin.show({delay: 300})">
+              JADI ADMIN</div>
+          </div>
+        </div>
+      </div>
+      <!-- JADI ADMIN -->
+      <% }else{ %>
+      <div class="tw-w-full d-flex justify-content-start">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start"><b>Menu Admin :</b> <br>
+
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya" onclick="goTo(`/barang`, {delay: 300})">
+              DATA BARANG</div>
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya" onclick="goTo(`/mahasiswa`, {delay: 300})">
+              DATA MAHASISWA</div>
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-cyan-300 hover:tw-bg-cyan-400 text-white fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-full tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out addAdminnya" onclick="goTo(`/peminjaman`, {delay: 300})">
+              DATA PEMINJAMAN</div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+      <% if ( sesiTerbuka ) { %>
+      <!-- LOGOUT -->
+      <div class="tw-w-full d-flex justify-content-end">
+        <div class="d-flex flex-column justify-content-center align-items-center tw-w-[50%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
+          <div class="tw-w-full text-start tw-select-none">
+            <b>Ingin keluar dari sesi?</b><br>
+            Anda bisa keluar dengan menekan tombol dibawah
+            ini :
+          </div>
+          <div class="py-1 tw-w-full tw-flex tw-justify-start">
+            <div class="text-white text-center tw-text-[1vw] py-2 rounded tw-bg-red-400 hover:tw-bg-red-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-32 tw-shadow tw-transition-all tw-duration-100 tw-ease-in-out" onclick="goTo(`/logout/bread_is_roti_shadow_is_bayang_before_kita_mati_better_kita_sembahyang`, {delay : 300})">
+              LOGOUT
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- LOGOUT -->
+      <% } %>
+
     </div>
-    <div class="gap-2 d-flex flex-column">
-        <!-- DATA BARANG -->
-        <div
-            class="text-center tw-w-[50vw] tw-h-[45vh] tw-bg-white rounded overflow-hidden tw-text-blue-500 tw-text-4xl tw-flex tw-flex-col tw-border-sky-200 shadow-sm tw-border">
-            <div
-                class="d-flex justify-content-center align-items-center tw-h-[10vh] tw-tracking-wide fw-bold tw-text-white tw-bg-sky-600">
-                <p class="m-0">
-                    Barang Poliban
-                </p>
-            </div>
-            <div class="p-3 tw-flex justify-content-between align-items-center justify-content-center">
-                <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-                    <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-                        <i class="bi-pc-display-horizontal "></i>
-                        <p class="tw-text-[2vw] text-center mb-0">
-                            AIO
-                        </p>
-                    </div>
-                    <div class="tw-bg-white tw-py-[6vh]">
-                        12
-                    </div>
-                </div>
-                <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-                    <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-                        <i class="bi-laptop"></i>
-                        <p class="tw-text-[2vw] text-center mb-0">
-                            Laptop
-                        </p>
-                    </div>
-                    <div class="tw-bg-white tw-py-[6vh]">
-                        15
-                    </div>
-                </div>
-                <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-                    <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-                        <i class="bi-pc-display"></i>
-                        <p class="tw-text-[2vw] text-center mb-0">
-                            PC
-                        </p>
-                    </div>
-                    <div class="tw-bg-white tw-py-[6vh]">
-                        17
-                    </div>
-                </div>
-            </div>
+  </div>
+  <div class="gap-2 d-flex flex-column">
+    <!-- DATA BARANG -->
+    <div class="text-center tw-w-[50vw] tw-h-[45vh] tw-bg-white rounded overflow-hidden tw-text-blue-500 tw-text-4xl tw-flex tw-flex-col tw-border-sky-200 shadow-sm tw-border">
+      <div class="d-flex justify-content-center align-items-center tw-h-[10vh] tw-tracking-wide fw-bold tw-text-white tw-bg-sky-600">
+        <p class="m-0">
+          Barang Poliban
+        </p>
+      </div>
+      <div class="p-3 tw-flex justify-content-between align-items-center justify-content-center">
+        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <i class="bi-pc-display-horizontal "></i>
+            <p class="tw-text-[2vw] text-center mb-0">
+              AIO
+            </p>
+          </div>
+          <div class="tw-bg-white tw-py-[6vh]">
+            12
+          </div>
         </div>
-        <!-- DATA BARANG -->
+        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <i class="bi-laptop"></i>
+            <p class="tw-text-[2vw] text-center mb-0">
+              Laptop
+            </p>
+          </div>
+          <div class="tw-bg-white tw-py-[6vh]">
+            15
+          </div>
+        </div>
+        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <i class="bi-pc-display"></i>
+            <p class="tw-text-[2vw] text-center mb-0">
+              PC
+            </p>
+          </div>
+          <div class="tw-bg-white tw-py-[6vh]">
+            17
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- DATA BARANG -->
 
-        <!-- DATA MAHASISWA -->
-        <div
-            class="text-center tw-w-[50vw] tw-h-[45vh] tw-bg-white rounded overflow-hidden tw-text-blue-500 tw-text-4xl tw-flex tw-flex-col tw-border-sky-200 shadow-sm tw-border">
-            <div
-                class="d-flex justify-content-center align-items-center tw-h-[10vh] tw-tracking-wide fw-bold tw-text-white tw-bg-blue-700">
-                <p class="m-0">
-                    Mahasiswa Poliban
-                </p>
-            </div>
-            <div class="p-3 tw-flex justify-content-between align-items-center justify-content-center">
-                <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-                    <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-                        <i class="bi-gender-male"></i>
-                        <p class="tw-text-[2vw] text-center mb-0">
-                            Laki-Laki
-                        </p>
-                    </div>
-                    <div class="tw-bg-white tw-py-[6vh]">
-                        12
-                    </div>
-                </div>
-                <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-                    <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-                        <i class="bi-gender-female"></i>
-                        <p class="tw-text-[2vw] text-center mb-0">
-                            Perempuan
-                        </p>
-                    </div>
-                    <div class="tw-bg-white tw-py-[6vh]">
-                        15
-                    </div>
-                </div>
-                <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-                    <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-                        <i class="bi-person-check-fill"></i>
-                        <p class="tw-text-[2vw] text-center mb-0">
-                            Mahasiswa
-                        </p>
-                    </div>
-                    <div class="tw-bg-white tw-py-[6vh]">
-                        17
-                    </div>
-                </div>
-            </div>
+    <!-- DATA MAHASISWA -->
+    <div class="text-center tw-w-[50vw] tw-h-[45vh] tw-bg-white rounded overflow-hidden tw-text-blue-500 tw-text-4xl tw-flex tw-flex-col tw-border-sky-200 shadow-sm tw-border">
+      <div class="d-flex justify-content-center align-items-center tw-h-[10vh] tw-tracking-wide fw-bold tw-text-white tw-bg-blue-700">
+        <p class="m-0">
+          Mahasiswa Poliban
+        </p>
+      </div>
+      <div class="p-3 tw-flex justify-content-between align-items-center justify-content-center">
+        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <i class="bi-gender-male"></i>
+            <p class="tw-text-[2vw] text-center mb-0">
+              Laki-Laki
+            </p>
+          </div>
+          <div class="tw-bg-white tw-py-[6vh]">
+            12
+          </div>
         </div>
-        <!-- DATA MAHASISWA -->
+        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <i class="bi-gender-female"></i>
+            <p class="tw-text-[2vw] text-center mb-0">
+              Perempuan
+            </p>
+          </div>
+          <div class="tw-bg-white tw-py-[6vh]">
+            15
+          </div>
+        </div>
+        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <i class="bi-person-check-fill"></i>
+            <p class="tw-text-[2vw] text-center mb-0">
+              Mahasiswa
+            </p>
+          </div>
+          <div class="tw-bg-white tw-py-[6vh]">
+            17
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- DATA MAHASISWA -->
+  </div>
+
+  <!-- INPUT KEMBALIKAN -->
+  <% if (dataPeminjaman.status==="dipinjamkan" ) { %>
+  <div class="tw-p-1 tw-min-w-[90vw] tw-max-w-[90vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
+    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+      Kembalikan Barang
     </div>
 
-    <!-- INPUT KEMBALIKAN -->
-    <% if (value.status==="dipinjamkan" ) { %>
-        <div
-            class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
-            <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-                Kembalikan Barang
-            </div>
+    <form action="/kembalikanBarang" method="post" class="flex-wrap gap-1 tw-w-full d-flex portrait:tw-flex-col align-items-center form--add">
 
-            <form action="/kembalikanBarang" method="post" class="d-flex flex-column w-100 form--add">
-                <div class="p-2 bg-white d-flex justify-content-evenly align-items-center"
-                    style="border-radius: 4px 4px 0px 0px">
-                    <span class="text-left" style="width: 15vw">Id Barang</span>
-                    <input type=" text" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang"
-                        value="<%= value.dataPeminjaman.id_barang ?? 'eaerawer' %>" readonly required />
-                </div>
-                <div class="p-2 bg-white d-flex justify-content-evenly align-items-center"
-                    style="border-radius: 4px 4px 0px 0px">
-                    <span class="text-left" style="width: 15vw">Nama Barang</span>
-                    <input type=" text" class="form-control !tw-bg-blue-50" name="nama_barang" placeholder="nama barang"
-                        value="<%= value.dataPeminjaman.nama_barang ?? '' %>" readonly required />
-                </div>
-                <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-                    <span class="text-left" style="width: 15vw">Kategori Barang</span>
-                    <input type=" text" class="form-control !tw-bg-blue-50" name="kategori_barang"
-                        placeholder="jenis barang" value="<%= value.dataPeminjaman.kategori_barang ?? '' %>" readonly
-                        required />
-                </div>
-                <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-                    <span class="text-left" style="width: 15vw">Gambar Barang</span>
-                    <input type=" text" class="form-control !tw-bg-blue-50" name="gambar_barang" id="gambarBarang"
-                        placeholder="gambar barang" value="<%= value.dataPeminjaman.gambar_barang ?? '' %>" readonly
-                        required />
-                </div>
-                <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-                    <span class="text-left" style="width: 15vw">Barang yang harus dikembalikan</span>
-                    <input type="number" class="form-control !tw-bg-blue-50" name="barang_dipinjam" id="barangDipinjam"
-                        placeholder="barang dipinjam" value="<%= value.dataPeminjaman.barangDipinjam %>" readonly
-                        required />
-                </div>
-                <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-                    <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
-                    <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" id="nimMahasiswa"
-                        placeholder="nim mahasiswa" value="<%= value.dataPeminjaman.nimMahasiswa %>" readonly
-                        required />
-                </div>
-                <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center"
-                    style="border-radius: 0px 0px 4px 4px">
-                    <button type="submit" class="px-4 btn btn-outline-success">kembalikan</button>
-                    <button type="reset" class="px-4 btn btn-outline-info">reset</button>
-                </div>
-            </form>
+      <div class="d-flex justify-content-evenly align-items-center bg-white p-2 tw-w-[49.8%] tw-h-[40vh] rounded overflow-hidden">
+        <img src="<%= dataPeminjaman.gambar_barang %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar <%= dataPeminjaman.nama_barang %>" />
+        <input type="text" class="form-control !tw-bg-blue-50" name="gambar_barang" placeholder="gambar barang" value="<%= dataPeminjaman.gambar_barang %>" readonly hidden />
+      </div>
+
+      <div class="d-flex flex-column tw-w-[49.8%] tw-h-[40vh] rounded overflow-hidden">
+
+        <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+          <span class="text-left" style="width: 15vw">Id Barang</span>
+          <input type=" text" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang" value="<%= dataPeminjaman.id_barang ?? 'eaerawer' %>" readonly required />
         </div>
-        <% } %>
-            <!-- INPUT KEMBALIKAN -->
 
-            <!-- INPUT LOGIN -->
-            <div
-                class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--login">
-                <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-                    Login
-                </div>
+        <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+          <span class="text-left" style="width: 15vw">Nama Barang</span>
+          <input type=" text" class="form-control !tw-bg-blue-50" name="nama_barang" placeholder="nama barang" value="<%= dataPeminjaman.nama_barang ?? '' %>" readonly required />
+        </div>
 
-                <form action="/login" method="post" class="d-flex flex-column w-100 form--add">
-                    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center"
-                        style="border-radius: 4px 4px 0px 0px">
-                        <span class="text-left" style="width: 15vw">nim mahasiswa</span>
-                        <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa"
-                            placeholder="nim mahasiswa" required />
-                    </div>
-                    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center"
-                        style="border-radius: 4px 4px 0px 0px">
-                        <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
-                        <input type="email" class="form-control !tw-bg-blue-50" name="email_mahasiswa"
-                            placeholder="email mahasiswa" required />
-                    </div>
-                    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center"
-                        style="border-radius: 0px 0px 4px 4px">
-                        <button type="submit" class="px-4 btn btn-outline-success">login</button>
-                        <button type="reset" class="px-4 btn btn-outline-info">reset</button>
-                    </div>
-                </form>
-            </div>
-            <!-- INPUT LOGIN -->
+        <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+          <span class="text-left" style="width: 15vw">Kategori Barang</span>
+          <input type=" text" class="form-control !tw-bg-blue-50" name="kategori_barang" placeholder="jenis barang" value="<%= dataPeminjaman.kategori_barang ?? '' %>" readonly required />
+        </div>
 
-            <!-- INPUT ADMIN -->
-            <div
-                class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--admin">
-                <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
-                    Admin
-                </div>
+        <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+          <span class="text-left" style="width: 15vw">Barang yang harus dikembalikan</span>
+          <input type="number" class="form-control !tw-bg-blue-50" name="barang_dipinjam" id="barangDipinjam" placeholder="barang dipinjam" value="<%= dataPeminjaman.barangDipinjam %>" readonly required />
+        </div>
 
-                <form action="/admin" method="post" class="d-flex flex-column w-100 form--add">
-                    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center"
-                        style="border-radius: 4px 4px 0px 0px">
-                        <span class="text-left" style="width: 15vw">Kode Admin</span>
-                        <input type="texta" class="form-control !tw-bg-blue-50" name="kode_admin"
-                            placeholder="kode admin" required />
-                    </div>
-                    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center"
-                        style="border-radius: 4px 4px 0px 0px">
-                        <span class="text-left" style="width: 15vw">Password Admin</span>
-                        <input type="password" class="form-control !tw-bg-blue-50" name="password_admin"
-                            placeholder="password admin" required />
-                    </div>
-                    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center"
-                        style="border-radius: 0px 0px 4px 4px">
-                        <button type="submit" class="px-4 btn btn-outline-success">login</button>
-                        <button type="reset" class="px-4 btn btn-outline-info">reset</button>
-                    </div>
-                </form>
-            </div>
-            <!-- INPUT LOGIN -->
+        <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+          <span class="text-left" style="width: 15vw">Nim Peminjamn</span>
+          <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" id="nimMahasiswa" placeholder="nim peminjam" value="<%= dataPeminjaman.nimMahasiswa %>" readonly required />
+        </div>
+
+      </div>
+
+      <div class="gap-5 p-3 bg-white tw-w-full d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+        <button type="submit" class="p-2 tw-w-[10%] btn btn-outline-success">kembalikan</button>
+        <button type="reset" class="p-2 tw-w-[10%] btn btn-outline-info">reset</button>
+      </div>
+
+    </form>
+  </div>
+  <% } %>
+  <!-- INPUT KEMBALIKAN -->
+
+
+
+  <!-- INPUT LOGIN -->
+  <div class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--login">
+    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+      Login
+    </div>
+
+    <form action="/login" method="post" class="d-flex flex-column w-100 form--add">
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">nim mahasiswa</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" placeholder="nim mahasiswa" required />
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
+        <input type="email" class="form-control !tw-bg-blue-50" name="email_mahasiswa" placeholder="email mahasiswa" required />
+      </div>
+      <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+        <button type="submit" class="px-4 btn btn-outline-success">login</button>
+        <button type="reset" class="px-4 btn btn-outline-info">reset</button>
+      </div>
+    </form>
+  </div>
+  <!-- INPUT LOGIN -->
+
+  <!-- INPUT ADMIN -->
+  <div class="tw-p-1 tw-w-[60vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--admin">
+    <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
+      Admin
+    </div>
+
+    <form action="/admin" method="post" class="d-flex flex-column w-100 form--add">
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">Kode Admin</span>
+        <input type="texta" class="form-control !tw-bg-blue-50" name="kode_admin" placeholder="kode admin" required />
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">Password Admin</span>
+        <input type="password" class="form-control !tw-bg-blue-50" name="password_admin" placeholder="password admin" required />
+      </div>
+      <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+        <button type="submit" class="px-4 btn btn-outline-success">login</button>
+        <button type="reset" class="px-4 btn btn-outline-info">reset</button>
+      </div>
+    </form>
+  </div>
+  <!-- INPUT LOGIN -->
 </div>

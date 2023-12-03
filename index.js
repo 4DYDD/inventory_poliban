@@ -179,30 +179,37 @@ app.get("/logout/:laksanakan", (req, res) => {
 app.get("/", (req, res) => {
   info.halaman = "PeminjamanUser";
 
+  const getBarang = ({ id_barang, nim_mahasiswa, barang_dipinjam, status }) => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM barang WHERE id_barang = '${id_barang}'`,
+        (err, results) => {
+          const resultBarang = JSON.parse(JSON.stringify(results[0]));
+          resultBarang.id_barang = id_barang;
+          resultBarang.nimMahasiswa = nim_mahasiswa;
+          resultBarang.barangDipinjam = barang_dipinjam;
+          resultBarang.status = status;
+          resolve(resultBarang);
+        }
+      );
+    });
+  };
+
   const getData = () => {
     return new Promise((resolve, reject) => {
-      //! NANTI INI DIGANTI JADI NIM MAHASISWA YANG DARI SESSION
       const { nimMahasiswa, emailMahasiswa } = info.sesi;
       con.query(
         `SELECT * FROM info_peminjaman WHERE nim_mahasiswa = '${nimMahasiswa}' AND status != 'diterima'`,
         (err, results) => {
-          const result = JSON.parse(JSON.stringify(results));
+          let result = JSON.parse(JSON.stringify(results));
           if (result.length < 1) {
             reject({ pesan: info.berhasil, status: "tidak meminjam" });
           } else {
-            const { id_barang, nim_mahasiswa, barang_dipinjam, status } =
-              result[0];
-            con.query(
-              `SELECT * FROM barang WHERE id_barang = '${id_barang}'`,
-              (err, results) => {
-                const result = JSON.parse(JSON.stringify(results[0]));
-                result.id_barang = id_barang;
-                result.nimMahasiswa = nim_mahasiswa;
-                result.barangDipinjam = barang_dipinjam;
-                if (err) reject(err);
-                resolve({ result, status });
-              }
-            );
+            getBarang(result[0]).then((resultBarang) => {
+              result = resultBarang;
+              console.log(result);
+              resolve(result);
+            });
           }
         }
       );
@@ -211,9 +218,8 @@ app.get("/", (req, res) => {
 
   getData()
     .then((dataPeminjaman) => {
-      const { result, status } = dataPeminjaman;
       res.render("dashboard-view", {
-        value: { result, status },
+        dataPeminjaman,
         berhasil: info.berhasil,
         sesinya: info.sesi,
         sesiTerbuka: info.sesi.sesiTerbuka,
@@ -226,7 +232,7 @@ app.get("/", (req, res) => {
     .catch((infonya) => {
       const { pesan, status } = infonya;
       res.render("dashboard-view", {
-        value: { dataPeminjaman: {}, status },
+        dataPeminjaman: { dataPeminjaman: {}, status },
         berhasil: pesan,
         sesinya: info.sesi,
         sesiTerbuka: info.sesi.sesiTerbuka,
@@ -302,6 +308,36 @@ app.post("/cariPeminjamanUser", (req, res) => {
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/peminjaman/user");
+});
+
+app.get("/detailBarangUser/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiUser(req, res)) return;
+
+  const getData = () => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM barang WHERE id_barang = '${req.params.primary}'`,
+        (err, results) => {
+          if (err) reject(err);
+          const result = JSON.parse(JSON.stringify(results[0]));
+          console.log(result);
+          resolve(result);
+        }
+      );
+    });
+  };
+
+  getData()
+    .then((dataBarang) => {
+      selectedData = dataBarang;
+      selectedData.isinya = true;
+      res.redirect("/peminjaman/user");
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    });
 });
 
 app.get("/pilihBarangDipinjam/:primary", (req, res) => {
@@ -402,13 +438,10 @@ app.post("/kembalikanBarang", (req, res) => {
       con.query(
         `UPDATE info_peminjaman SET status = 'mengembalikan' WHERE nim_mahasiswa = ${nim_mahasiswa}`
       );
-      con.query(
-        `UPDATE barang SET jumlah_barang = jumlah_barang + ${barang_dipinjam}, dipinjam = dipinjam - ${barang_dipinjam} WHERE id_barang = ${id_barang}`,
-        (err) => {
-          if (err) reject(err);
-        }
+
+      resolve(
+        "<b>Barang berhasil dikembalikan</b><br> Admin akan segera mengkonfirmasi pengembalian barang"
       );
-      resolve("Barang berhasil dikembalikan");
     });
   };
 
@@ -429,7 +462,7 @@ app.post("/kembalikanBarang", (req, res) => {
 //HALAMAN BARANG
 app.get("/barang", (req, res) => {
   //* --> CEK ADMIN
-  //FIXME if (!validasiAdmin(req, res)) return;
+  if (!validasiAdmin(req, res)) return;
 
   info.halaman = "Barang";
 
@@ -497,7 +530,7 @@ app.post("/cariBarang", (req, res) => {
 
 app.get("/detailBarang/:primary", (req, res) => {
   //* --> CEK ADMIN
-  //FIXME if (!validasiAdmin(req, res)) return;
+  if (!validasiAdmin(req, res)) return;
 
   const getData = () => {
     return new Promise((resolve, reject) => {
@@ -1026,7 +1059,7 @@ app.get("/diterima/:primary", (req, res) => {
         `DELETE FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
         (err, results) => {
           if (err) reject(err);
-          resolve("Barang telah dikembalikan dan diterima");
+          resolve("Peminjam telah mengembalikan barang, barang diterima");
         }
       );
     });
@@ -1093,7 +1126,7 @@ app.get("/detailPinjam/:primary", (req, res) => {
   const getData = () => {
     return new Promise((resolve, reject) => {
       con.query(
-        `SELECT * FROM info_peminjaman, data_mahasiswa, barang WHERE id_peminjaman = '${req.params.primary}'`,
+        `SELECT * FROM info_peminjaman INNER JOIN barang ON info_peminjaman.id_barang = barang.id_barang INNER JOIN data_mahasiswa ON info_peminjaman.nim_mahasiswa = data_mahasiswa.nim_mahasiswa WHERE id_peminjaman = '${req.params.primary}'`,
         (err, results) => {
           if (err) reject(err);
           const result = JSON.parse(JSON.stringify(results[0]));

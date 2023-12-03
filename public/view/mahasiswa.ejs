@@ -15,7 +15,7 @@
   <tbody>
     <% if (dataMahasiswa.length < 1) { %>
     <tr>
-      <th colspan="7" class="bg-warning text-white tw-tracking-wide tw-text-[1vw]">
+      <th colspan="8" class="bg-warning text-white tw-tracking-wide tw-text-[1vw]">
         TIDAK ADA (<%= cari %>) DIDALAM DATABASE!
       </th>
     </tr>
@@ -99,7 +99,7 @@
   <form action="/tambahMahasiswa" method="post" class="d-flex flex-column w-100 form--add">
     <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
       <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
-      <input type=" text" class="form-control" name="nama_mahasiswa" id="namaMahasiswa" placeholder="nama mahasiswa" required />
+      <input type="text" class="form-control" name="nama_mahasiswa" id="namaMahasiswa" placeholder="nama mahasiswa" required />
     </div>
     <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
       <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
@@ -109,9 +109,9 @@
         <option value="perempuan">Perempuan</option>
       </select>
     </div>
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+    <div class="p-2 bg-white d-flex justify-content-evenly align-items-baseline">
       <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
-      <input type=" text" class="form-control" name="alamat_mahasiswa" id="alamatMahasiswa" placeholder="alamat mahasiswa" required />
+      <textarea class="form-control" name="alamat_mahasiswa" placeholder="alamat mahasiswa" rows="1" required></textarea>
     </div>
     <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
       <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
@@ -155,7 +155,7 @@
     </div>
     <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
       <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
-      <input type="text" class="form-control" name="alamat_mahasiswa" placeholder="alamat mahasiswa" value="<%= selectedData.alamat_mahasiswa ?? '' %>" required />
+      <textarea class="form-control" name="alamat_mahasiswa" rows="1" placeholder="alamat mahasiswa" required><%= selectedData.alamat_mahasiswa ?? '' %></textarea>
     </div>
     <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
       <span class="text-left" style="width: 15vw">Email Mahasiswa</span>

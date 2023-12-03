@@ -28,20 +28,18 @@
       <% } %>
 
       <!-- NAVBAR KITA -->
-      <nav class="navbar bg-white py-0 position-sticky sticky-top z-1 tw-shadow-[0px_0px_1px_1px_rgba(42,98,255,0.3),0px_0px_5px_0.5px_rgba(0,0,0,0.3);]" id="navbar">
-        <div class="px-0 container-fluid d-flex justify-content-between">
-          <div class="px-4 navbar-brand">
-            <img src="https://4dydd.github.io/footage/logopoliban.webp" alt="Logo" class="tw-w-[7%] d-inline-block align-text-center" />
+      <nav class="navbar tw-flex justify-content-center align-items-center bg-white py-0 position-sticky sticky-top z-1 tw-shadow-[0px_0px_1px_1px_rgba(42,98,255,0.3),0px_0px_5px_0.5px_rgba(0,0,0,0.3);]" id="navbar">
+        <div class="py-2 tw-w-full d-flex justify-content-center align-items-center tw-flex-nowrap">
+          <div class="px-4 d-flex align-items-center gap-2 tw-text-[1.5vw] tw-w-[30vw]">
+            <img src="https://4dydd.github.io/footage/logopoliban.webp" alt="Logo" class="tw-w-[10%] d-inline-block align-text-center" />
             Pendataan Barang Poliban
           </div>
 
-          <div class="gap-3 px-4 d-flex">
-            <form action="/cari<%= halaman %>" method="post" class="m-0 tw-max-w-[3vw] hover:tw-max-w-[20vw] hover:tw-cursor-pointer hover:tw-pointer-events-auto tw-relative tw-bg-blue-50 d-flex justify-content-start align-items-center tw-border-blue-300 tw-border-[1px] rounded overflow-hidden tw-transition-all tw-duration-300 tw-ease-in-out" onmouseleave="tutup(this)">
+          <div class="gap-3 px-4 m-0 tw-w-[70vw] d-flex justify-content-end tw-flex-nowrap">
+            <form action="/cari<%= halaman %>" method="post" class="m-0 tw-max-w-[3vw] hover:tw-max-w-[20vw] hover:tw-cursor-pointer hover:tw-pointer-events-auto tw-relative tw-bg-blue-50 d-flex justify-content-start align-items-center tw-border-blue-300 tw-border-[1px] rounded overflow-hidden tw-transition-all tw-duration-500 tw-ease-in-out" onmouseleave="tutup(this)">
               <% if (halaman !=="PeminjamanUser" ) { %>
               <input class="p-1 tw-ml-[3vw] tw-text-blue-700 tw-placeholder-blue-800 tw-bg-blue-100 tw-outline-none focus:tw-border-none focus:tw-bg-blue-200 focus:tw-placeholder-blue-700 tw-transition-all tw-ease-out tw-duration-300" type="text" name="DataYangDicari" placeholder="cari data <%= halaman %>">
-              <% }else{ %>
-              <input class="p-1 tw-ml-[3vw] tw-text-blue-700 tw-placeholder-blue-800 tw-bg-blue-100 tw-outline-none focus:tw-border-none focus:tw-bg-blue-200 focus:tw-placeholder-blue-700 tw-transition-all tw-ease-out tw-duration-300" type="text" name="DataYangDicari" placeholder="cari data Barang">
-              <% } %>
+              <% }%>
               <div class="tw-scale-x-[-1] px-2 tw-absolute tw-w-[3vw] tw-bg-white tw-h-full tw-flex justify-content-center align-items-center" onclick="this.parentElement.submit()">
                 <i class="bi-search tw-text-blue-800"></i>
               </div>

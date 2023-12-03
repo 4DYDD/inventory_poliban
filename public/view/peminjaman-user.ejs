@@ -62,6 +62,9 @@
         </div>
       </td>
       <td class="p-2">
+        <div class="text-white tw-bg-orange-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/detailBarangUser/<%=barang.id_barang%>`, {delay : 100});">
+          detail
+        </div>
         <div class="gap-1 d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap">
           <% if (berhasil[0]==true) { %>
           <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/pilihBarangDipinjam/<%=barang.id_barang%>`, {delay : 100});">
@@ -134,3 +137,45 @@
   </form>
 </div>
 <!-- INPUT PINJAM -->
+
+<!-- DETAIL -->
+<div class="tw-p-1 tw-min-w-[90vw] tw-max-w-[90vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[52%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--detail">
+  <div class="tw-bg-[rgb(156,195,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Detail Peminjaman
+  </div>
+
+  <!-- FORM DETAIL -->
+  <form action="/editPeminjaman" method="post" class="flex-wrap gap-1 tw-w-full d-flex portrait:tw-flex-col align-items-center form--add">
+
+    <!-- GAMBAR -->
+    <div class="d-flex justify-content-evenly align-items-center bg-white p-2 tw-w-[49.8%] tw-h-[50vh] rounded overflow-hidden">
+      <img src="<%= selectedData.gambar_barang %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar <%= selectedData.nama_barang %>" />
+      <input type="text" class="form-control !tw-bg-blue-50" name="gambar_barang" placeholder="gambar barang" value="<%= selectedData.gambar_barang %>" readonly hidden />
+    </div>
+    <!-- GAMBAR -->
+
+    <!-- BARANG -->
+    <div class="d-flex flex-column tw-w-[49.8%] tw-h-[50vh] bg-white rounded overflow-hidden">
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Id Barang</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang" value="<%= selectedData.id_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Nama Barang</span>
+        <input type=" text" class="form-control !tw-bg-blue-50" name="nama_barang" placeholder="nama barang" value="<%= selectedData.nama_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Kategori Barang</span>
+        <input type=" text" class="form-control !tw-bg-blue-50" name="kategori_barang" placeholder="jenis barang" value="<%= selectedData.kategori_barang ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Jumlah Barang</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="jumlah_barang" placeholder="jumlah barang" value="<%= selectedData.jumlah_barang ?? '' %>" readonly required disabled />
+      </div>
+    </div>
+    <!-- BARANG -->
+
+  </form>
+  <!-- FORM DETAIL -->
+</div>
+<!-- DETAIL -->

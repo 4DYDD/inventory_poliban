@@ -4,13 +4,13 @@
     <tr class="tw-bg-[rgb(224,237,255)]">
       <th class="tw-w-[3vw]">no</th>
       <th>id peminjaman</th>
-      <th>tanggal meminjam</th>
-      <th>tanggal mengembalikan</th>
-      <th>id barang yang dipinjam</th>
-      <th>jumlah barang dipinjam</th>
+      <th>tgl-meminjam</th>
+      <th>tgl-mengembalikan</th>
+      <th>id barang</th>
+      <th>barang dipinjam</th>
       <th>nim peminjam</th>
       <th>status peminjaman</th>
-      <th class="tw-w-[14vw]">opsi</th>
+      <th class="tw-w-[15vw]">opsi</th>
     </tr>
   </thead>
   <tbody>
@@ -140,13 +140,15 @@
         <input type="text" class="form-control !tw-bg-yellow-400" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="<%= selectedData.status ?? '' %>" readonly required />
         <% }else if(selectedData && selectedData.status==="dipinjamkan"){ %>
         <input type="text" class="form-control !tw-bg-teal-400 text-white tw-tracking-wider" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="<%= selectedData.status ?? '' %>" readonly required />
+        <% }else if(selectedData && selectedData.status==="mengembalikan"){ %>
+        <input type="text" class="form-control !tw-bg-blue-400 text-white tw-tracking-wider" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="<%= selectedData.status ?? '' %>" readonly required />
         <% } %>
       </div>
     </div>
     <!-- PEMINJAMAN -->
 
     <!-- BARANG -->
-    <div class="d-flex flex-column tw-w-[49.8%] tw-h-[40vh] rounded overflow-hidden">
+    <div class="d-flex flex-column tw-w-[49.8%] tw-h-[40vh] rounded overflow-hidden fw-bold">
       <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
         <span class="text-left tw-w-[25vw]">Id Barang</span>
         <input type="number" class="form-control !tw-bg-blue-50" name="id_barang" placeholder="id barang" value="<%= selectedData.id_barang ?? '' %>" readonly required />
@@ -171,7 +173,7 @@
     <!-- BARANG -->
 
     <!-- MAHASISWA -->
-    <div class="d-flex flex-column tw-w-[49.8%] tw-min-h-[40vh] rounded overflow-hidden">
+    <div class="d-flex flex-column tw-w-[49.8%] tw-min-h-[40vh] rounded overflow-hidden fw-bold">
       <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
         <span class="text-left tw-w-[25vw]">Nama Mahasiswa</span>
         <input type="text" class="form-control !tw-bg-blue-50" name="nama_mahasiswa" placeholder="nama mahasiswa" value="<%= selectedData.nama_mahasiswa ?? '' %>" readonly required />
