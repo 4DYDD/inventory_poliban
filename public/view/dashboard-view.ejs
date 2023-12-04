@@ -162,6 +162,7 @@
 
     </div>
   </div>
+
   <div class="gap-2 d-flex flex-column">
     <!-- DATA BARANG -->
     <div class="text-center tw-w-[50vw] tw-h-[45vh] tw-bg-white rounded overflow-hidden tw-text-blue-500 tw-text-4xl tw-flex tw-flex-col tw-border-sky-200 shadow-sm tw-border">
@@ -170,40 +171,29 @@
           Barang Poliban
         </p>
       </div>
-      <div class="p-3 tw-flex justify-content-between align-items-center justify-content-center">
+      <div class="p-3 tw-flex justify-content-evenly align-items-center">
+        <% if (dataSortir) { %>
+        <% dataSortir.forEach(ds => { %>
         <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
+
           <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-            <i class="bi-pc-display-horizontal "></i>
-            <p class="tw-text-[2vw] text-center mb-0">
-              AIO
-            </p>
-          </div>
-          <div class="tw-bg-white tw-py-[6vh]">
-            12
-          </div>
-        </div>
-        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
-            <i class="bi-laptop"></i>
-            <p class="tw-text-[2vw] text-center mb-0">
-              Laptop
-            </p>
-          </div>
-          <div class="tw-bg-white tw-py-[6vh]">
-            15
-          </div>
-        </div>
-        <div class="tw-w-[15vw] tw-flex tw-flex-col tw-rounded-md overflow-hidden shadow-sm">
-          <div class="py-2 tw-flex tw-flex-col tw-bg-sky-100">
+            <% if (ds.kategori_barang ==="PC") { %>
             <i class="bi-pc-display"></i>
+            <% }else if(ds.kategori_barang ==="Laptop") {%>
+            <i class="bi bi-laptop"></i>
+            <% }else{ %>
+            <i class="bi-pc-display-horizontal"></i>
+            <% } %>
             <p class="tw-text-[2vw] text-center mb-0">
-              PC
+              <span><%= ds.kategori_barang %></span>
             </p>
           </div>
           <div class="tw-bg-white tw-py-[6vh]">
-            17
+            <%= ds.total_barang %>
           </div>
         </div>
+        <% }) %>
+        <% } %>
       </div>
     </div>
     <!-- DATA BARANG -->

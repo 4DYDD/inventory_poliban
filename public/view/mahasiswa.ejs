@@ -73,10 +73,10 @@
       </td>
       <td class="p-2">
         <div class="gap-1 d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap">
-          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
+          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/detailMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100})">
             detail
           </div>
-          <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/pilihMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100});">
+          <div class="text-white tw-bg-blue-500 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/pilihMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100})">
             edit
           </div>
           <div class="text-white tw-bg-red-400 rounded tw-cursor-pointer tw-flex-grow-1 py-1 tw-w-[100%]" onclick="goTo(`/hapusMahasiswa/<%=mahasiswa.nim_mahasiswa%>`, {delay : 100})">
@@ -89,6 +89,59 @@
   </tbody>
 </table>
 <!-- TABEL KITA -->
+
+<!-- DETAIL -->
+<div class="tw-p-1 tw-min-w-[90vw] tw-max-w-[90vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[52%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--detail">
+  <div class="tw-bg-[rgb(156,195,255)] rounded text-center mb-1 py-1 text-white position-relative">
+    Detail Peminjaman
+  </div>
+
+  <!-- FORM DETAIL -->
+  <form action="/editPeminjaman" method="post" class="flex-wrap gap-1 tw-w-full d-flex portrait:tw-flex-col align-items-center form--add">
+
+    <!-- GAMBAR -->
+    <div class="d-flex justify-content-evenly align-items-center bg-white p-2 tw-w-[49.8%] tw-h-[60vh] rounded overflow-hidden">
+      <% if (selectedData.jenkel_mahasiswa === 'laki-laki') { %>
+      <img src="<%= 'https://cdn0.iconfinder.com/data/icons/man-user-human-profile-avatar-person-business/100/10-1User_14-512.png' %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar laki-laki" />
+      <% }else if(selectedData.jenkel_mahasiswa === 'perempuan'){ %>
+      <img src="<%= 'https://www.starkeyoutdoors.com/uploads/1/7/4/4/17442997/96-968657-business-woman-png-business-woman-icon-png_orig.png' %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar laki-laki" />
+      <% }else{ %>
+      <img src="<%= 'https://th.bing.com/th/id/OIP.IjE6Y0XVKhjcWuVrlQW6kwAAAA?rs=1&pid=ImgDetMain' %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar tak diketahui" />
+      <% } %>
+    </div>
+    <!-- GAMBAR -->
+
+    <!-- MAHASISWA -->
+    <div class="d-flex flex-column tw-w-[49.8%] tw-h-[60vh] bg-white rounded overflow-hidden">
+
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Nim Mahasiswa</span>
+        <input type="number" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" placeholder="nim mahasiswa" value="<%= selectedData.nim_mahasiswa ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Nama Mahasiswa</span>
+        <input type=" text" class="form-control !tw-bg-blue-50" name="nama_mahasiswa" placeholder="nama mahasiswa" value="<%= selectedData.nama_mahasiswa ?? '' %>" readonly required disabled />
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Jenkel Mahasiswa</span>
+        <input type=" text" class="form-control !tw-bg-blue-50" name="jenkel_mahasiswa" placeholder="jenkel mahasiswa" value="<%= selectedData.jenkel_mahasiswa ?? '' %>" readonly required disabled />
+      </div>
+      <div class="px-2 py-2 bg-white d-flex justify-content-evenly align-items-baseline">
+        <span class="text-left tw-w-[25vw]">Alamat Mahasiswa</span>
+        <textarea class="form-control !tw-bg-blue-50" name="alamat_mahasiswa" placeholder="alamat mahasiswa" rows="3" disabled required><%= selectedData.alamat_mahasiswa ?? '' %></textarea>
+      </div>
+      <div class="d-flex justify-content-evenly align-items-center bg-white px-2 py-0 tw-h-[8vh]">
+        <span class="text-left tw-w-[25vw]">Email Mahasiswa</span>
+        <input type="email" class="form-control !tw-bg-blue-50" name="email_mahasiswa" placeholder="email mahasiswa" value="<%= selectedData.email_mahasiswa ?? '' %>" readonly required disabled />
+      </div>
+
+    </div>
+    <!-- MAHASISWA -->
+
+  </form>
+  <!-- FORM DETAIL -->
+</div>
+<!-- DETAIL -->
 
 <!-- INPUT ADD -->
 <div class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--add">
@@ -130,42 +183,60 @@
 <!-- INPUT ADD -->
 
 <!-- INPUT EDIT -->
-<div class="tw-p-1 w-50 tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--edit">
+<div class="tw-p-1 tw-min-w-[90vw] tw-max-w-[90vw] tw-bg-[rgb(227,238,255)] d-flex flex-column rounded shadow-sm tw-top-[50%] tw-left-[100%] tw-translate-x-[0%] tw-translate-y-[-50%] tw-fixed flex opacity-1 tw-transition-all tw-duration-300 tw-ease-in-out input--edit">
   <div class="tw-bg-[rgb(177,208,255)] rounded text-center mb-1 py-1 text-white position-relative">
     Edit Mahasiswa
   </div>
 
   <!-- FORM EDIT -->
-  <form action="/editMahasiswa" method="post" class="d-flex flex-column w-100 form--add">
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
-      <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
-      <input type="text" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" placeholder="nim mahasiswa" value="<%= selectedData.nim_mahasiswa ?? 'eaerawer' %>" readonly required />
+  <form action="/editMahasiswa" method="post" class="flex-wrap gap-1 tw-w-full d-flex portrait:tw-flex-col align-items-center form--add">
+
+    <!-- GAMBAR -->
+    <div class="d-flex justify-content-evenly align-items-center bg-white p-2 tw-w-[49.8%] tw-h-[60vh] rounded overflow-hidden">
+      <% if (selectedData.jenkel_mahasiswa === 'laki-laki') { %>
+      <img src="<%= 'https://cdn0.iconfinder.com/data/icons/man-user-human-profile-avatar-person-business/100/10-1User_14-512.png' %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar laki-laki" />
+      <% }else if(selectedData.jenkel_mahasiswa === 'perempuan'){ %>
+      <img src="<%= 'https://www.starkeyoutdoors.com/uploads/1/7/4/4/17442997/96-968657-business-woman-png-business-woman-icon-png_orig.png' %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar perempuan" />
+      <% }else{ %>
+      <img src="<%= 'https://th.bing.com/th/id/OIP.IjE6Y0XVKhjcWuVrlQW6kwAAAA?rs=1&pid=ImgDetMain' %>" class="tw-w-[60%] portrait:tw-w-[50%]" alt="gambar tak diketahui" />
+      <% } %>
     </div>
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
-      <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
-      <input type="text" class="form-control" name="nama_mahasiswa" placeholder="nama mahasiswa" value="<%= selectedData.nama_mahasiswa ?? '' %>" required />
+    <!-- GAMBAR -->
+
+    <div class="d-flex flex-column tw-w-[49.8%] tw-h-[60vh] bg-white rounded overflow-hidden">
+
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">Nim Mahasiswa</span>
+        <input type="text" class="form-control !tw-bg-blue-50" name="nim_mahasiswa" placeholder="nim mahasiswa" value="<%= selectedData.nim_mahasiswa ?? 'eaerawer' %>" readonly required />
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">Nama Mahasiswa</span>
+        <input type="text" class="form-control" name="nama_mahasiswa" placeholder="nama mahasiswa" value="<%= selectedData.nama_mahasiswa ?? '' %>" required />
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
+        <span class="text-left" style="width: 15vw">Jenkel Mahasiswa</span>
+        <select name="jenkel_mahasiswa" class="form-select">
+          <option value="kosong" <%- selectedData.jenkel_mahasiswa === 'kosong' ? 'selected' : ''%>>Pilih Jenkel</option>
+          <option value="laki-laki" <%- selectedData.jenkel_mahasiswa === 'laki-laki' ? 'selected' : ''%>>Laki-Laki</option>
+          <option value="perempuan" <%- selectedData.jenkel_mahasiswa === 'perempuan' ? 'selected' : ''%>>Perempuan</option>
+        </select>
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-baseline">
+        <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
+        <textarea class="form-control" name="alamat_mahasiswa" rows="3" placeholder="alamat mahasiswa" required><%= selectedData.alamat_mahasiswa ?? '' %></textarea>
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+        <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
+        <input type="email" class="form-control" name="email_mahasiswa" placeholder="email mahasiswa" value="<%= selectedData.email_mahasiswa ?? '' %>" required />
+      </div>
+      <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
+        <span class="text-left" style="width: 15vw">Nomor Mahasiswa</span>
+        <input type="number" class="form-control" name="nh_mahasiswa" placeholder="nomor mahasiswa" value="<%= selectedData.nh_mahasiswa ?? '' %>" required />
+      </div>
+
+
     </div>
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center" style="border-radius: 4px 4px 0px 0px">
-      <span class="text-left" style="width: 15vw">Jenkel Mahasiswa</span>
-      <select name="jenkel_mahasiswa" class="form-select">
-        <option value="kosong" <%- selectedData.jenkel_mahasiswa === 'kosong' ? 'selected' : ''%>>Pilih Jenkel</option>
-        <option value="laki-laki" <%- selectedData.jenkel_mahasiswa === 'Laki-Laki' ? 'selected' : ''%>>Laki-Laki</option>
-        <option value="perempuan" <%- selectedData.jenkel_mahasiswa === 'Perempuan' ? 'selected' : ''%>>Perempuan</option>
-      </select>
-    </div>
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-      <span class="text-left" style="width: 15vw">Alamat Mahasiswa</span>
-      <textarea class="form-control" name="alamat_mahasiswa" rows="1" placeholder="alamat mahasiswa" required><%= selectedData.alamat_mahasiswa ?? '' %></textarea>
-    </div>
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-      <span class="text-left" style="width: 15vw">Email Mahasiswa</span>
-      <input type="email" class="form-control" name="email_mahasiswa" placeholder="email mahasiswa" value="<%= selectedData.email_mahasiswa ?? '' %>" required />
-    </div>
-    <div class="p-2 bg-white d-flex justify-content-evenly align-items-center">
-      <span class="text-left" style="width: 15vw">Nomor Mahasiswa</span>
-      <input type="number" class="form-control" name="nh_mahasiswa" placeholder="nomor mahasiswa" value="<%= selectedData.nh_mahasiswa ?? '' %>" required />
-    </div>
-    <div class="gap-5 p-3 bg-white d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
+    <div class="gap-5 p-3 bg-white tw-w-full d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
       <button type="submit" class="px-4 btn btn-outline-success">
         edit
       </button>
@@ -173,6 +244,7 @@
         reset
       </button>
     </div>
+
   </form>
 </div>
 <!-- INPUT EDIT -->

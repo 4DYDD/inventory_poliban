@@ -41,6 +41,7 @@ const info = {
       .toString()
       .padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`,
   },
+  dataSortir: "",
 };
 
 const kataMutiara = () =>
@@ -96,6 +97,34 @@ const validasiAdmin = (req, res) => {
   } else {
     return true;
   }
+};
+
+const ambilBarang = () => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      "SELECT kategori_barang, SUM(jumlah_barang) AS total_barang FROM barang GROUP BY kategori_barang",
+      (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      }
+    );
+  });
+};
+
+const getBarang = ({ id_barang, nim_mahasiswa, barang_dipinjam, status }) => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `SELECT * FROM barang WHERE id_barang = '${id_barang}'`,
+      (err, results) => {
+        const resultBarang = JSON.parse(JSON.stringify(results[0]));
+        resultBarang.id_barang = id_barang;
+        resultBarang.nimMahasiswa = nim_mahasiswa;
+        resultBarang.barangDipinjam = barang_dipinjam;
+        resultBarang.status = status;
+        resolve(resultBarang);
+      }
+    );
+  });
 };
 
 //TODO --> MENGURUSI MASALAH LOGIN--LOGOUT
@@ -178,22 +207,14 @@ app.get("/logout/:laksanakan", (req, res) => {
 //TODO --> HALAMAN USER
 app.get("/", (req, res) => {
   info.halaman = "PeminjamanUser";
-
-  const getBarang = ({ id_barang, nim_mahasiswa, barang_dipinjam, status }) => {
-    return new Promise((resolve, reject) => {
-      con.query(
-        `SELECT * FROM barang WHERE id_barang = '${id_barang}'`,
-        (err, results) => {
-          const resultBarang = JSON.parse(JSON.stringify(results[0]));
-          resultBarang.id_barang = id_barang;
-          resultBarang.nimMahasiswa = nim_mahasiswa;
-          resultBarang.barangDipinjam = barang_dipinjam;
-          resultBarang.status = status;
-          resolve(resultBarang);
-        }
-      );
+  ambilBarang()
+    .then(async (datanya) => {
+      dataSortir = await JSON.parse(JSON.stringify(datanya));
+      info.dataSortir = dataSortir;
+    })
+    .catch((err) => {
+      dataSortir = err;
     });
-  };
 
   const getData = () => {
     return new Promise((resolve, reject) => {
@@ -203,11 +224,11 @@ app.get("/", (req, res) => {
         (err, results) => {
           let result = JSON.parse(JSON.stringify(results));
           if (result.length < 1) {
+            console.log(info.dataSortir);
             reject({ pesan: info.berhasil, status: "tidak meminjam" });
           } else {
             getBarang(result[0]).then((resultBarang) => {
               result = resultBarang;
-              console.log(result);
               resolve(result);
             });
           }
@@ -233,6 +254,7 @@ app.get("/", (req, res) => {
       const { pesan, status } = infonya;
       res.render("dashboard-view", {
         dataPeminjaman: { dataPeminjaman: {}, status },
+        dataSortir: info.dataSortir,
         berhasil: pesan,
         sesinya: info.sesi,
         sesiTerbuka: info.sesi.sesiTerbuka,
@@ -768,6 +790,36 @@ app.post("/cariMahasiswa", (req, res) => {
   const { DataYangDicari } = req.body;
   info.cari = DataYangDicari;
   res.redirect("/mahasiswa");
+});
+
+app.get("/detailMahasiswa/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
+  const getData = () => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM data_mahasiswa WHERE nim_mahasiswa = '${req.params.primary}'`,
+        (err, results) => {
+          if (err) reject(err);
+          const result = JSON.parse(JSON.stringify(results[0]));
+          console.log(result);
+          resolve(result);
+        }
+      );
+    });
+  };
+
+  getData()
+    .then((dataMahasiswa) => {
+      selectedData = dataMahasiswa;
+      selectedData.isinya = true;
+      res.redirect("/mahasiswa");
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    });
 });
 
 //TAMBAH MAHASISWA
