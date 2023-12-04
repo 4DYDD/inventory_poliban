@@ -41,11 +41,36 @@ const info = {
       .toString()
       .padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`,
   },
-  dataSortir: "",
+  dataSortir: {
+    barang: [],
+    mahasiswa: [],
+  },
 };
 
 const kataMutiara = () =>
   "bread_is_roti_shadow_is_bayang_before_kita_mati_better_kita_sembahyang";
+
+const handleErrorPage = (infonya, paramsPrimary) => {
+  return `<html><head><link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" /><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" /><link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Creepster&family=Hind:wght@300&family=Manjari&family=Nunito&family=Quicksand:wght@700&family=Skranji&family=Titillium+Web&family=Yatra+One&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script></head>
+        <body class="bg-[rgb(252,252,252)] tw-tracking-wide tw-text-[1.15vw]" style="font-family: Nunito">
+        <div class="alert alert-danger tw-min-w-[25vw] d-flex flex-column justify-content-center align-items-center gap-3 position-fixed tw-top-[-10%] tw-left-[50%] tw-translate-x-[-50%] tw-translate-y-[-50%] tw-z-[1] tw-transition-all tw-duration-500 tw-ease-out" id="alertnya" role="alert">
+        <div>tidak ada ${infonya} dengan ID (<b>${paramsPrimary}</b>)!</div>
+        <div class="btn btn-warning" onclick="goTo('/', {delay: 100})">Kembali</div>
+        </div>
+        <script src="../../script/script.js"></script>
+        </body>
+        </html>`;
+};
 
 let selectedData = "";
 
@@ -70,6 +95,9 @@ function hapusSesi() {
     kodeAdmin: "",
     passwordAdmin: "",
     sesiTerbuka: false,
+    tanggal: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`,
   };
 }
 
@@ -103,6 +131,18 @@ const ambilBarang = () => {
   return new Promise((resolve, reject) => {
     con.query(
       "SELECT kategori_barang, SUM(jumlah_barang) AS total_barang FROM barang GROUP BY kategori_barang",
+      (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      }
+    );
+  });
+};
+
+const ambilMahasiswa = () => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      "SELECT jenkel_mahasiswa, COUNT(*) AS total_mahasiswa FROM data_mahasiswa GROUP BY jenkel_mahasiswa",
       (err, results) => {
         if (err) reject(err);
         resolve(results);
@@ -176,7 +216,7 @@ app.post("/admin", (req, res) => {
           if (result.length > 0) {
             resolve([true, "Login Admin Berhasil"]);
           } else {
-            reject([false, "Login gagal"]);
+            reject([false, "Anda gagal masuk sebagai Admin"]);
           }
         }
       );
@@ -208,12 +248,21 @@ app.get("/logout/:laksanakan", (req, res) => {
 app.get("/", (req, res) => {
   info.halaman = "PeminjamanUser";
   ambilBarang()
-    .then(async (datanya) => {
-      dataSortir = await JSON.parse(JSON.stringify(datanya));
-      info.dataSortir = dataSortir;
+    .then((datanya) => {
+      const dataSortir = JSON.parse(JSON.stringify(datanya));
+      info.dataSortir.barang = dataSortir;
     })
     .catch((err) => {
-      dataSortir = err;
+      info.dataSortir.barang = [{ barang: err }];
+    });
+
+  ambilMahasiswa()
+    .then((datanya) => {
+      const dataSortir = JSON.parse(JSON.stringify(datanya));
+      info.dataSortir.mahasiswa = dataSortir;
+    })
+    .catch((err) => {
+      info.dataSortir.mahasiswa = [{ mahasiswa: err }];
     });
 
   const getData = () => {
@@ -241,6 +290,8 @@ app.get("/", (req, res) => {
     .then((dataPeminjaman) => {
       res.render("dashboard-view", {
         dataPeminjaman,
+        dsBarang: info.dataSortir.barang,
+        dsMahasiswa: info.dataSortir.mahasiswa,
         berhasil: info.berhasil,
         sesinya: info.sesi,
         sesiTerbuka: info.sesi.sesiTerbuka,
@@ -254,7 +305,8 @@ app.get("/", (req, res) => {
       const { pesan, status } = infonya;
       res.render("dashboard-view", {
         dataPeminjaman: { dataPeminjaman: {}, status },
-        dataSortir: info.dataSortir,
+        dsBarang: info.dataSortir.barang,
+        dsMahasiswa: info.dataSortir.mahasiswa,
         berhasil: pesan,
         sesinya: info.sesi,
         sesiTerbuka: info.sesi.sesiTerbuka,
@@ -992,6 +1044,20 @@ app.get("/peminjaman", (req, res) => {
 
   info.halaman = "Peminjaman";
 
+  // TANGGAL MENGEMBALIKAN
+  const tanggalPengembalian = (stringTanggal) => {
+    const [tanggal, bulan, tahun] = stringTanggal.split("/");
+    return new Date(
+      `${tahun}-${bulan.padStart(2, "0")}-${tanggal.padStart(2, "0")}`
+    );
+  };
+
+  // HITUNG SELISIH HARI ANTARA TANGGAL HARI INI DAN TANGGAL PEMGEMBALIAN
+  const hitungHari = (tanggalPengembalian, tanggalHariIni) => {
+    return (selisihHari =
+      (tanggalPengembalian - tanggalHariIni) / (1000 * 60 * 60 * 24));
+  };
+
   const getData = () => {
     return new Promise((resolve, reject) => {
       if (info.cari) {
@@ -1007,7 +1073,8 @@ app.get("/peminjaman", (req, res) => {
           "SELECT * FROM info_peminjaman INNER JOIN barang ON info_peminjaman.id_barang = barang.id_barang INNER JOIN data_mahasiswa ON info_peminjaman.nim_mahasiswa = data_mahasiswa.nim_mahasiswa ORDER BY FIELD(status, 'meminjam') DESC, status;",
           (err, results) => {
             if (err) reject(err);
-            resolve(JSON.parse(JSON.stringify(results)));
+            const result = JSON.parse(JSON.stringify(results));
+            resolve(result);
           }
         );
       }
@@ -1019,6 +1086,9 @@ app.get("/peminjaman", (req, res) => {
       res.render("peminjaman", {
         selectedData,
         dataPeminjaman,
+        tanggalPengembalian,
+        hitungHari,
+        tanggal: info.sesi.tanggal,
         berhasil: info.berhasil,
         cari: info.cari,
         halaman: info.halaman,
@@ -1034,6 +1104,9 @@ app.get("/peminjaman", (req, res) => {
       res.render("peminjaman", {
         selectedData,
         dataPeminjaman: [],
+        tanggalPengembalian,
+        hitungHari,
+        tanggal: info.sesi.tanggal,
         berhasil: info.berhasil,
         cari: info.cari,
         halaman: info.halaman,
@@ -1055,22 +1128,26 @@ app.get("/dipinjamkan/:primary", (req, res) => {
       con.query(
         `SELECT * FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
         (err, results) => {
-          const result = JSON.parse(JSON.stringify(results[0]));
-          con.query(
-            `UPDATE barang SET jumlah_barang = jumlah_barang - ${result.barang_dipinjam}, dipinjam = dipinjam + ${result.barang_dipinjam} WHERE id_barang = ${result.id_barang}`,
-            (err, results) => {
-              if (err) {
-                con.query(
-                  `DELETE FROM info_peminjaman WHERE nim_mahasiswa = ${result.nim_mahasiswa}`
-                );
-                reject(
-                  err +
-                    "<br><br>Kamu meminjam terlalu banyak, barangnya tidak cukup"
-                );
+          if (err || !JSON.parse(JSON.stringify(results)).length) {
+            reject(err);
+          } else {
+            const result = JSON.parse(JSON.stringify(results[0]));
+            con.query(
+              `UPDATE barang SET jumlah_barang = jumlah_barang - ${result.barang_dipinjam}, dipinjam = dipinjam + ${result.barang_dipinjam} WHERE id_barang = ${result.id_barang}`,
+              (err, results) => {
+                if (err) {
+                  con.query(
+                    `DELETE FROM info_peminjaman WHERE nim_mahasiswa = ${result.nim_mahasiswa}`
+                  );
+                  reject(
+                    err +
+                      "<br><br>Kamu meminjam terlalu banyak, barangnya tidak cukup"
+                  );
+                }
+                resolve("Pinjam Barang Berhasil");
               }
-              resolve("Pinjam Barang Berhasil");
-            }
-          );
+            );
+          }
         }
       );
     });
@@ -1087,7 +1164,7 @@ app.get("/dipinjamkan/:primary", (req, res) => {
     .catch((err) => {
       info.berhasil = [false, err];
       console.log(err);
-      res.redirect("/peminjaman");
+      res.send(handleErrorPage("Peminjaman", req.params.primary));
     });
 });
 
@@ -1100,11 +1177,14 @@ app.get("/diterima/:primary", (req, res) => {
       con.query(
         `SELECT * FROM info_peminjaman WHERE id_peminjaman = ${req.params.primary}`,
         (err, results) => {
-          if (err) reject(err);
-          const result = JSON.parse(JSON.stringify(results[0]));
-          con.query(
-            `UPDATE barang SET jumlah_barang = jumlah_barang + ${result.barang_dipinjam}, dipinjam = dipinjam - ${result.barang_dipinjam} WHERE id_barang = ${result.id_barang}`
-          );
+          if (err || !JSON.parse(JSON.stringify(results)).length) {
+            reject(err);
+          } else {
+            const result = JSON.parse(JSON.stringify(results[0]));
+            con.query(
+              `UPDATE barang SET jumlah_barang = jumlah_barang + ${result.barang_dipinjam}, dipinjam = dipinjam - ${result.barang_dipinjam} WHERE id_barang = ${result.id_barang}`
+            );
+          }
         }
       );
       con.query(
@@ -1124,8 +1204,8 @@ app.get("/diterima/:primary", (req, res) => {
     })
     .catch((err) => {
       info.berhasil = [false, err];
+      res.send(handleErrorPage("Peminjaman", req.params.primary));
       console.log(err);
-      res.redirect("/peminjaman");
     });
 });
 
@@ -1180,10 +1260,13 @@ app.get("/detailPinjam/:primary", (req, res) => {
       con.query(
         `SELECT * FROM info_peminjaman INNER JOIN barang ON info_peminjaman.id_barang = barang.id_barang INNER JOIN data_mahasiswa ON info_peminjaman.nim_mahasiswa = data_mahasiswa.nim_mahasiswa WHERE id_peminjaman = '${req.params.primary}'`,
         (err, results) => {
-          if (err) reject(err);
-          const result = JSON.parse(JSON.stringify(results[0]));
-          console.log(result);
-          resolve(result);
+          if (err || !JSON.parse(JSON.stringify(results)).length) {
+            reject(err);
+          } else {
+            const result = JSON.parse(JSON.stringify(results[0]));
+            console.log(result);
+            resolve(result);
+          }
         }
       );
     });
@@ -1196,8 +1279,7 @@ app.get("/detailPinjam/:primary", (req, res) => {
       res.redirect("/peminjaman");
     })
     .catch((err) => {
-      console.error(err);
-      res.status(500).send("Internal Server Error");
+      res.send();
     });
 });
 

@@ -10,7 +10,7 @@
       <th>barang dipinjam</th>
       <th>nim peminjam</th>
       <th>status peminjaman</th>
-      <th class="tw-w-[15vw]">opsi</th>
+      <th class="tw-w-[17vw]">opsi</th>
     </tr>
   </thead>
   <tbody>
@@ -88,6 +88,17 @@
           <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/dipinjamkan/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
             pinjamkan
           </div>
+          <% }else if (peminjaman.status=="dipinjamkan" ){ %>
+          <% if (hitungHari(tanggalPengembalian(peminjaman.tanggal_mengembalikan), new Date(tanggal)) === -1 ){ %>
+          <div class="text-white motion-safe:tw-animate-bounce tw-bg-red-500 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%] d-flex justify-content-center align-items-center gap-2 ">
+            <div class="tw-inline-flex">hubungi</div>
+            <div class="tw-inline-flex tw-animate-ping p-1 tw-border tw-border-white tw-rounded-full tw-bg-red-300"></div>
+          </div>
+          <% }else{ %>
+          <div class="text-white tw-bg-orange-600 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
+            dipinjamkan
+          </div>
+          <% } %>
           <% }else if (peminjaman.status=="mengembalikan" ){ %>
           <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/diterima/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
             terima
@@ -139,7 +150,11 @@
         <% if (selectedData && selectedData.status==="meminjam") { %>
         <input type="text" class="form-control !tw-bg-yellow-400" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="<%= selectedData.status ?? '' %>" readonly required />
         <% }else if(selectedData && selectedData.status==="dipinjamkan"){ %>
+        <% if (hitungHari(tanggalPengembalian(selectedData.tanggal_mengembalikan), new Date(tanggal)) === -1 ){ %>
+        <input type="text" class="form-control !tw-bg-red-400 text-white tw-tracking-wider" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="Belum Dikembalikan" readonly required />
+        <% }else{ %>
         <input type="text" class="form-control !tw-bg-teal-400 text-white tw-tracking-wider" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="<%= selectedData.status ?? '' %>" readonly required />
+        <% } %>
         <% }else if(selectedData && selectedData.status==="mengembalikan"){ %>
         <input type="text" class="form-control !tw-bg-blue-400 text-white tw-tracking-wider" name="status" id="statusPeminjaman" placeholder="status peminjaman" value="<%= selectedData.status ?? '' %>" readonly required />
         <% } %>
