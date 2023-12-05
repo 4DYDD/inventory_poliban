@@ -1,6 +1,7 @@
 <div class="gap-3 tw-w-full d-flex justify-content-center align-items-center portrait:tw-flex-col">
   <div class="tw-w-full tw-h-[91vh] d-flex flex-column justify-content-center align-items-center rounded shadow-sm" style="background: url('https://4dydd.github.io/footage/porsenipoliban.jpg') center; background-size: 30%;">
     <div class="tw-w-full tw-h-full d-flex flex-column justify-content-between align-items-center p-3 tw-gap-[3vh] tw-bg-[rgba(228,255,254,0.95)] tw-border tw-border-sky-200 rounded tw-overflow-auto">
+
       <div class="tw-w-full d-flex mb-5 flex-column justify-content-center align-items-center text-center tw-text-[1.5vw] tw-py-2.5 tw-bg-[rgba(255,255,159,0.7)] tw-border tw-rounded-lg tw-rounded-t-none">
         <img src="https://4dydd.github.io/footage/logopoliban.webp" alt="Logo" width="10%" class="tw-opacity-50" />
         <div class="fw-bold tw-tracking-wide tw-text-blue-900 tw-opacity-60" style="font-family: Nunito;">
@@ -13,8 +14,9 @@
           </div>
         </div>
       </div>
+
       <div class="gap-4 tw-w-full tw-h-full d-flex flex-column">
-        <% if (!sesiTerbuka) { %>
+        <% if (!sesiTerbuka && !sesinya.kodeAdmin) { %>
         <!-- LOGIN -->
         <div class="tw-w-full d-flex justify-content-end">
           <div class="tw-border-[1.5px] tw-border-white d-flex flex-column justify-content-center align-items-center tw-w-[60%] tw-h-full p-2 tw-rounded-lg tw-rounded-tr-none tw-bg-cyan-200 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
@@ -35,7 +37,7 @@
         <!-- LOGIN -->
         <% } %>
 
-        <% if (sesiTerbuka) { %>
+        <% if (sesiTerbuka && !sesinya.kodeAdmin) { %>
 
         <% if (dataPeminjaman.status==="tidak meminjam" ) { %>
         <!-- PINJAM BARANG -->
@@ -86,8 +88,8 @@
             </div>
             <div class="py-1 tw-w-full tw-flex tw-justify-start">
               <div class="text-white text-left tw-text-[1vw] d-flex justify-content-center align-items-center p-2 rounded bg-warning hover:!tw-bg-yellow-500 fw-bold tw-tracking-[2px] tw-cursor-pointer tw-w-70 tw-shadow tw-transition-all tw-duration-200 tw-ease-in-out gap-2">
-                <div class="tw-flex motion-reduce:tw-animate-pulse tw-opacity-100 justify-content-center align-items-center tw-rounded-[100%] tw-p-[3px] tw-m-0 tw-bg-orange-400">
-                  <div class="tw-relative tw-animate-ping tw-rounded-[100%] tw-w-2 tw-p-[5px] tw-m-0 tw-bg-orange-300 tw-border-[1.5px] tw-border-x-orange-500 tw-border-y-red-400"></div>
+                <div class="tw-flex motion-reduce:tw-animate-pulse tw-opacity-100 justify-content-center align-items-center tw-rounded-[100%] tw-m-0 tw-bg-orange-400">
+                  <div class="tw-relative tw-animate-spin tw-rounded-[100%] tw-w-2 tw-p-[7px] tw-m-0 tw-bg-orange-400 tw-border-[1.5px] tw-border-y-red-500 tw-border-r-red-500"></div>
                 </div>
                 <span class="tw-animate-pulse">SEDANG DIKONFIRMASI...</span>
               </div>`
@@ -120,7 +122,7 @@
         <% } %>
 
 
-        <% if (!sesinya.kodeAdmin) { %>
+        <% if (!sesinya.kodeAdmin && !sesinya.nimMahasiswa) { %>
         <!-- JADI ADMIN -->
         <div class="tw-w-full d-flex justify-content-start">
           <div class="tw-border-[1.5px] tw-border-white d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
@@ -140,7 +142,7 @@
           </div>
         </div>
         <!-- JADI ADMIN -->
-        <% }else{ %>
+        <% }else if (sesinya.kodeAdmin && !sesinya.nimMahasiswa){ %>
         <div class="tw-w-full d-flex justify-content-start">
           <div class="tw-border-[1.5px] tw-border-white d-flex flex-column justify-content-center align-items-center tw-w-[45%] tw-h-full p-2 tw-rounded-xl tw-rounded-tl-none tw-bg-cyan-100 tw-shadow-md tw-shadow-[rgba(24,117,145,0.15)]">
             <div class="tw-w-full text-start"><b>Menu Admin :</b> <br>
@@ -321,7 +323,6 @@
 
               <div class="gap-5 p-3 bg-white tw-w-full d-flex justify-content-center align-items-center" style="border-radius: 0px 0px 4px 4px">
                 <button type="submit" class="p-2 tw-w-[10%] btn btn-outline-success">kembalikan</button>
-                <button type="reset" class="p-2 tw-w-[10%] btn btn-outline-info">reset</button>
               </div>
 
             </form>
@@ -380,4 +381,13 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="tw-fixed tw-right-[0%] tw-top-[100%] tw-translate-y-[-90%] tw-bg-red-300 p-3">
+  <div>
+    <span>Nim Mahasiswa :</span>
+    <span><%= sesinya.nimMahasiswa %></span>
+  </div>
+  <span>Email Mahasiswa :</span>
+  <span><%= sesinya.emailMahasiswa %></span>
 </div>

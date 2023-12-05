@@ -81,18 +81,18 @@
       </td>
       <td class="p-2">
         <div class="gap-1 d-flex tw-justify-center tw-items-center portrait:tw-flex-wrap">
-          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/detailPinjam/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
+          <div class="text-white tw-bg-orange-400 hover:tw-bg-orange-500 tw-duration-200 tw-transition-all tw-ease-in text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/detailPinjam/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
             detail
           </div>
           <% if (peminjaman.status=="meminjam" ) { %>
-          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/dipinjamkan/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
+          <div class="text-white tw-bg-green-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/dipinjamkan/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
             pinjamkan
           </div>
           <% }else if (peminjaman.status=="dipinjamkan" ){ %>
           <% if (hitungHari(tanggalPengembalian(peminjaman.tanggal_mengembalikan), new Date(tanggal)) === -1 ){ %>
-          <div class="text-white motion-safe:tw-animate-bounce tw-bg-red-500 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%] d-flex justify-content-center align-items-center gap-2 ">
+          <div class="text-white motion-safe:tw-animate-bounce tw-bg-red-500 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%] d-flex justify-content-center align-items-center gap-2" onclick="goTo(`/hubungiPeminjam/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
             <div class="tw-inline-flex">hubungi</div>
-            <div class="tw-inline-flex tw-animate-ping p-1 tw-border tw-border-white tw-rounded-full tw-bg-red-300"></div>
+            <div class="p-1 tw-inline-flex tw-animate-ping tw-border tw-border-white tw-rounded-full tw-bg-red-300"></div>
           </div>
           <% }else{ %>
           <div class="text-white tw-bg-orange-600 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]">
@@ -100,7 +100,7 @@
           </div>
           <% } %>
           <% }else if (peminjaman.status=="mengembalikan" ){ %>
-          <div class="text-white tw-bg-orange-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/diterima/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
+          <div class="text-white tw-bg-teal-400 text-decoration-none rounded tw-cursor-pointer py-1 tw-w-[100%]" onclick="goTo(`/diterima/<%= peminjaman.id_peminjaman %>`, {delay: 100})">
             terima
           </div>
           <% } %>

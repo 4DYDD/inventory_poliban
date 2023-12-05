@@ -1219,6 +1219,38 @@ app.post("/cariPeminjaman", (req, res) => {
   res.redirect("/peminjaman");
 });
 
+app.get("/hubungiPeminjam/:primary", (req, res) => {
+  //* --> CEK ADMIN
+  if (!validasiAdmin(req, res)) return;
+
+  const getData = () => {
+    return new Promise((resolve, reject) => {
+      con.query(
+        `SELECT * FROM info_peminjaman INNER JOIN data_mahasiswa ON info_peminjaman.nim_mahasiswa = data_mahasiswa.nim_mahasiswa WHERE id_peminjaman = '${req.params.primary}'`,
+        (err, results) => {
+          if (err || !JSON.parse(JSON.stringify(results)).length) {
+            reject(err);
+          } else {
+            const result = JSON.parse(JSON.stringify(results[0]));
+            console.log(result);
+            resolve(result);
+          }
+        }
+      );
+    });
+  };
+
+  getData()
+    .then((dataPeminjaman) => {
+      res.redirect(
+        `https://wa.me/${dataPeminjaman.nh_mahasiswa.replace(/^08/, "+628")}`
+      );
+    })
+    .catch((err) => {
+      res.send(handleErrorPage(err, req.params.primary));
+    });
+});
+
 // //TAMBAH PEMINJAMAN
 // app.post("/tambahPeminjaman", (req, res) => {
 //   //* --> CEK ADMIN
@@ -1279,7 +1311,7 @@ app.get("/detailPinjam/:primary", (req, res) => {
       res.redirect("/peminjaman");
     })
     .catch((err) => {
-      res.send();
+      res.send(handleErrorPage(err, req.params.primary));
     });
 });
 
