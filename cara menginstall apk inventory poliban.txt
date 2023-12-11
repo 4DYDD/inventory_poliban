@@ -1,0 +1,29 @@
+1. install aplikasi node.js (installer sudah tersedia di dalam folder yang berbentuk .rar)
+  a. install node.js melalui installer
+  b. tekan (ok) saja terus sampai download selesai
+  
+2. setelah node.js berhasil diinstal selanjutnya silahkan buka terminal dan arahkan ke lokasi folder projectnya yaitu Inventory--poliban
+
+3. jalankan npm install, tunggu sampai proses penginstalan dependencies nya selesai
+
+4. nyalakan xampp/laragon atau aplikasi sejenisnya untuk terhubung ke database
+
+5. masuk ke bagian phpmyadmin untuk mengimport database yang sudah disediakan (didalam folder .rar ada file Inventory--poliban.sql)
+
+5. setelah selesai mengimport database, buka 1 terminal lagi karena kita akan menjalankan :
+  a. npm start
+  b. npm run tailwind
+  kedua command ini harus di jalankan di terminal yang berbeda di lokasi folder yang sama
+
+6. buka web browser yang ingin digunakan (direkomendasikan menggunakan Microsoft Edge)
+
+7. ketikkan alamat localhostnya yaitu --> http://localhost:8003/
+
+8. aplikasi sudah siap untuk dipakai
+
+9. kode Admin     --> adminpoltekjaya
+   password Admin --> adminpoltekjamping123
+
+   atau bisa juga diliat di gambar yang terdapat folder Inventory--poliban.rar
+
+tepatnya di pojok kanan bawah

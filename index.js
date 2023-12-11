@@ -192,8 +192,6 @@ app.post("/login", (req, res) => {
     .then((infonya) => {
       //* handle berhasil
       isiSesi(nim_mahasiswa, email_mahasiswa, "", "", true);
-      console.log(typeof info.sesi.nimMahasiswa);
-      console.log(info.sesi.nimMahasiswa);
       info.berhasil = infonya;
       res.redirect("/");
     })
@@ -203,6 +201,7 @@ app.post("/login", (req, res) => {
       res.redirect("/");
     });
 });
+
 app.post("/admin", (req, res) => {
   const { kode_admin, password_admin } = req.body;
 
@@ -246,6 +245,7 @@ app.get("/logout/:laksanakan", (req, res) => {
 
 //TODO --> HALAMAN USER
 app.get("/", (req, res) => {
+  console.log(info.sesi);
   info.halaman = "PeminjamanUser";
   ambilBarang()
     .then((datanya) => {
